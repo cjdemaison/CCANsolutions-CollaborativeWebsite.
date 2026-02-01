@@ -6,7 +6,8 @@
 
 - Sprint Dates: February 2026
 - Team Name: CCANsolutions
-- Members Present: @cjdemaison, @teammate1, @teammate2, @teammate3
+- Members Present: @cjdemaison, @nbryner1121, @cm192724, @Ariyanamoore
+
 
 - Sprint Goals:
   - Establish project structure
