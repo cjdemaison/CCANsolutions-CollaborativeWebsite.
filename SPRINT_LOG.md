@@ -17,9 +17,9 @@
 | Task Description       | Assigned Owner | Priority | Status      |
 |------------------------|---------------|----------|-------------|
 | Update README          | @cjdemaison   | High     | In Progress |
-| Maintain SPRINT_LOG    | @teammate1    | High     | To Do       |
-| Homepage Improvements | @teammate2    | Medium   | To Do       |
-| Navigation Cleanup     | @teammate3    | Medium   | To Do       |
+| Maintain SPRINT_LOG    | @nbryner1121   | High     | To Do       |
+| Homepage Improvements | @cm192724    | Medium   | To Do       |
+| Navigation Cleanup     | @Ariyanamoore   | Medium   | To Do       |
 
 ---
 
