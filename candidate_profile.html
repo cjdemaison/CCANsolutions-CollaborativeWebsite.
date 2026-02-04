@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidate Profile - Acutec ATS</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <div id="topBar">
+        <div class="title">Candidate Profile</div>
+        <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+    </div>
+
+    <!-- SIDE NAV -->
+    <div id="sideNav">
+        <a href="home.html">Home</a>
+        <a href="recruiting.html">Talent Search</a>
+        <a href="add_lead.html">Add Lead</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main">
+
+        <h1>Candidate Details</h1>
+
+        <div id="profileContainer">
+
+            <!-- NAME -->
+            <div class="profileRow">
+                <label>Name</label>
+                <input type="text" id="profileName">
+            </div>
+
+            <!-- PHONE -->
+            <div class="profileRow">
+                <label>Phone</label>
+                <input type="text" id="profilePhone">
+                <div>
+                    <a id="profilePhoneLink" class="link" href="#">Call this number</a>
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="profileRow">
+                <label>Email</label>
+                <input type="email" id="profileEmail">
+                <div>
+                    <a id="profileEmailLink" class="link" href="#">Send Email</a>
+                </div>
+            </div>
+
+            <!-- LOCATION -->
+            <div class="profileRow">
+                <label>Location</label>
+                <input type="text" id="profileLocation">
+            </div>
+
+            <!-- STATUS -->
+            <div class="profileRow">
+                <label>Status</label>
+                <select id="profileStatus">
+                    <option>New</option>
+                    <option>Attempted Contact</option>
+                    <option>Contacted</option>
+                    <option>Interview Scheduled</option>
+                    <option>Interviewed</option>
+                    <option>Hired</option>
+                    <option>Closed</option>
+                </select>
+            </div>
+
+            <!-- BUCKET -->
+            <div class="profileRow">
+                <label>Bucket</label>
+                <select id="profileBucket">
+                    <option>New Lead</option>
+                    <option>Hot Lead</option>
+                    <option>Contact Later</option>
+                    <option>CNC</option>
+                    <option>Quality</option>
+                    <option>Skilled</option>
+                    <option>Not Interested</option>
+                </select>
+            </div>
+
+            <!-- NOTES -->
+            <h3>Notes</h3>
+
+            <div id="notesList"></div>
+
+            <textarea id="newNoteText" placeholder="Add a new note..."></textarea>
+            <button onclick="addNoteToProfile()">Add Note</button>
+
+            <br><br>
+            <button onclick="saveProfile()" style="width:100%;">Save Profile</button>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Profile-specific helper to add notes
+        function addNoteToProfile() {
+            let id = parseInt(localStorage.getItem("currentProfile"));
+            let txt = document.getElementById("newNoteText").value.trim();
+            if (!txt) return;
+            addNote(id, txt);
+            document.getElementById("newNoteText").value = "";
+        }
+
+        // After DOM loaded, link phone + email click actions
+        document.addEventListener("DOMContentLoaded", () => {
+            let id = parseInt(localStorage.getItem("currentProfile"));
+            let c = candidates.find(x => x.id === id);
+            if (!c) return;
+
+            document.getElementById("profilePhoneLink").href = "tel:" + c.phone.replace(/\D/g, "");
+            document.getElementById("profileEmailLink").href = "mailto:" + c.email;
+        });
+    </script>
+
+</body>
+</html>

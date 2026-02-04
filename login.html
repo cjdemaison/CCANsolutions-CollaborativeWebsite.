@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acutec ATS - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Fake login just redirects to home
+        function doLogin() {
+            window.location.href = "home.html";
+        }
+    </script>
+</head>
+
+<body style="margin:0; padding:0; background:#f4f6f5;">
+
+    <!-- TOP BAR -->
+    <div id="topBar" style="justify-content:center;">
+        <div class="title">Acutec ATS Login</div>
+    </div>
+
+    <!-- LOGIN BOX -->
+    <div style="
+        width: 350px;
+        margin: 70px auto;
+        background: white;
+        padding: 25px;
+        box-shadow: 0 0 6px #aaa;
+        border-radius: 6px;
+    ">
+
+        <h2 style="text-align:center;">Welcome</h2>
+        <p style="text-align:center; color:#666;">Sign in to access the ATS</p>
+
+        <div style="margin-bottom:15px;">
+            <label>Email</label>
+            <input type="text" style="width:100%; padding:8px; margin-top:5px;">
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <label>Password</label>
+            <input type="password" style="width:100%; padding:8px; margin-top:5px;">
+        </div>
+
+        <button onclick="doLogin()" style="width:100%; padding:10px; font-size:16px;">
+            Login
+        </button>
+
+    </div>
+
+</body>
+</html>

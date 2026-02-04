@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acutec ATS - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <div id="topBar">
+        <div class="title">Acutec ATS Dashboard</div>
+        <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+    </div>
+
+    <!-- SIDE NAV -->
+    <div id="sideNav">
+        <a href="home.html">Home</a>
+        <a href="recruiting.html">Talent Search</a>
+        <a href="add_lead.html">Add Lead</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main">
+
+        <!-- DASHBOARD HEADER -->
+        <div class="dashboardHeader">
+            <h1>Good Morning, Cameron</h1>
+            <p id="todayDate" class="dashboardDate"></p>
+        </div>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboardGrid">
+
+            <!-- FOLLOW-UP CALENDAR CARD -->
+            <div class="sectionBox card cardLarge">
+
+                <div class="calendarHeaderRow">
+                    <div>
+                        <h2>Follow-up Calendar</h2>
+                        <p class="cardSubtitle">
+                            Click a date to view scheduled follow-ups.
+                        </p>
+                    </div>
+                    <div class="monthNav">
+                        <button class="circleBtn" onclick="changeMonth(-1)">&lt;</button>
+                        <span id="monthLabel">Month 0000</span>
+                        <button class="circleBtn" onclick="changeMonth(1)">&gt;</button>
+                    </div>
+                </div>
+
+                <div id="calendarGrid" class="calendarGrid">
+                    <!-- JS builds month grid here -->
+                </div>
+
+                <hr class="cardDivider">
+
+                <div id="followupsHeader" class="followupsHeader"></div>
+                <div id="followupsList"></div>
+            </div>
+
+            <!-- TODO CARD -->
+            <div class="sectionBox card">
+                <h2>Today’s To-Dos</h2>
+                <p class="cardSubtitle">
+                    Anything you want to get done today.
+                </p>
+
+                <div class="todoInputRow">
+                    <input type="text" id="todoInput" placeholder="New task...">
+                    <button onclick="addTodo()">Add</button>
+                </div>
+
+                <div id="todoList"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
