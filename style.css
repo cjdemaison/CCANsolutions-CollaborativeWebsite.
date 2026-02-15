@@ -527,3 +527,135 @@ tr:hover {
         width: 150px;
     }
 }
+/* ===========================
+   PATCH: Calendar + Followups + Todos
+   (Matches script.js class names)
+   Paste at END of style.css
+   =========================== */
+
+   .calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.calendarDayHeader {
+    font-size: 12px;
+    color: #777;
+    text-align: center;
+    padding: 6px 0;
+    font-weight: 600;
+}
+
+.calendarCell {
+    background: #fff;
+    border: 1px solid #e6eaea;
+    border-radius: 12px;
+    min-height: 56px;
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.calendarCell:hover {
+    background: #f2f4f5;
+}
+
+.calendarBlank {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.calendarCell.today {
+    border-color: #005f56;
+    background: #e9f5f3;
+}
+
+.calendarCellTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendarDayNumber {
+    font-weight: 700;
+    font-size: 13px;
+    color: #222;
+}
+
+.calendarDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.calendarDot.hasFollowups {
+    background: #005f56;
+}
+
+/* Followups list */
+.followupRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.followupRow:last-child {
+    border-bottom: none;
+}
+
+.followupName {
+    font-weight: 700;
+    color: #005f56;
+}
+
+.followupMeta {
+    font-size: 13px;
+    color: #555;
+}
+
+.emptyState {
+    padding: 10px 0;
+    color: #777;
+    font-size: 14px;
+}
+
+/* Todos */
+.todoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.todoRow:last-child {
+    border-bottom: none;
+}
+
+.todoLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.todoDone {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.todoDelete {
+    background: #a83232;
+}
+
+.todoDelete:hover {
+    background: #cc3a3a;
+}
