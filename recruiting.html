@@ -1,155 +1,136 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Acutec ATS - Talent Search</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+  <title>Acutec ATS - Talent Search</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 
 <body>
 
-    <!-- TOP BAR -->
-    <div id="topBar">
-        <div class="title">Talent Search</div>
-        <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
-    </div>
+  <!-- TOP BAR -->
+  <div id="topBar">
+    <div class="title">Talent Search</div>
+    <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+  </div>
 
-    <!-- SIDE NAV -->
-    <div id="sideNav">
-        <a href="home.html">Home</a>
-        <a href="recruiting.html">Talent Search</a>
-        <a href="add_lead.html">Add Lead</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </div>
+  <!-- SIDE NAV -->
+  <div id="sideNav">
+    <a href="home.html">Home</a>
+    <a class="active" href="recruiting.html">Talent Search</a>
+    <a href="add_lead.html">Add Lead</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
 
-    <!-- MAIN -->
-    <div id="main">
+  <!-- MAIN -->
+  <div id="main">
 
-        <!-- HEADER + SEARCH CARD -->
-        <div class="sectionBox card searchCard">
+    <!-- HEADER + SEARCH CARD -->
+    <div class="sectionBox card searchCard">
+      <div class="searchHeaderRow">
+        <div>
+          <h1>Talent Search</h1>
+          <p class="cardSubtitle">Search Acutec candidates and manage your pipeline.</p>
+        </div>
+        <div class="searchHeaderActions">
+          <button class="secondaryBtn" disabled>Import Leads</button>
+          <button onclick="window.location='add_lead.html'">Add Lead</button>
+        </div>
+      </div>
 
-            <div class="searchHeaderRow">
-                <div>
-                    <h1>Talent Search</h1>
-                    <p class="cardSubtitle">
-                        Search Acutec candidates and manage your pipeline.
-                    </p>
-                </div>
-                <div class="searchHeaderActions">
-                    <button class="secondaryBtn" disabled>Import Leads</button>
-                    <button onclick="window.location='add_lead.html'">Add Lead</button>
-                </div>
-            </div>
+      <div class="searchBarRow">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search candidates..."
+          oninput="updateSearch()"
+        >
+      </div>
 
-            <div class="searchBarRow">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search candidates..."
-                    oninput="updateSearch()"
-                >
-            </div>
-
-            <div class="filterRow">
-                <div class="filterGroup">
-                    <label>Search within</label>
-                    <select id="searchField" onchange="updateSearch()">
-                        <option value="all">All fields</option>
-                        <option value="name">Name</option>
-                        <option value="location">Location</option>
-                        <option value="phone">Phone</option>
-                        <option value="email">Email</option>
-                        <option value="status">Status</option>
-                        <option value="bucket">Bucket</option>
-                    </select>
-                </div>
-
-                <div class="filterGroup">
-                    <label>Status</label>
-                    <select id="statusFilter" onchange="updateSearch()">
-                        <option value="all">All</option>
-                        <option value="New">New</option>
-                        <option value="Attempted Contact">Attempted Contact</option>
-                        <option value="Contacted">Contacted</option>
-                        <option value="Interview Scheduled">Interview Scheduled</option>
-                        <option value="Interviewed">Interviewed</option>
-                        <option value="Hired">Hired</option>
-                        <option value="Closed">Closed</option>
-                    </select>
-                </div>
-
-                <div class="filterGroup">
-                    <label>Sort by</label>
-                    <select id="sortBy" onchange="updateSearch()">
-                        <option value="followUpSoonest">Follow-up (soonest)</option>
-                        <option value="nameAZ">Name (A–Z)</option>
-                        <option value="recentAdded">Recently added</option>
-                    </select>
-                </div>
-
-                <div class="filterGroup filterCount">
-                    <span id="candidateCount"></span>
-                </div>
-            </div>
+      <div class="filterRow">
+        <div class="filterGroup">
+          <label>Search within</label>
+          <select id="searchField" onchange="updateSearch()">
+            <option value="all">All fields</option>
+            <option value="name">Name</option>
+            <option value="location">Location</option>
+            <option value="phone">Phone</option>
+            <option value="email">Email</option>
+            <option value="status">Status</option>
+            <option value="bucket">Bucket</option>
+          </select>
         </div>
 
-        <!-- TABLE CARD -->
-        <div class="sectionBox card">
-
-            <!-- BULK ACTIONS -->
-            <div id="bulkActions">
-                <label>Bulk Actions:</label>
-
-                <select onchange="bulkStatus(this.value)">
-                    <option value="">Change Status...</option>
-                    <option>New</option>
-                    <option>Attempted Contact</option>
-                    <option>Contacted</option>
-                    <option>Interview Scheduled</option>
-                    <option>Interviewed</option>
-                    <option>Hired</option>
-                    <option>Closed</option>
-                </select>
-
-                <select onchange="bulkBucket(this.value)">
-                    <option value="">Move to Bucket...</option>
-                    <option value="New Lead">New Lead</option>
-                    <option value="Hot Lead">Hot Lead</option>
-                    <option value="Contact Later">Contact Later</option>
-                    <option value="CNC">CNC</option>
-                    <option value="Quality">Quality</option>
-                    <option value="Skilled">Skilled</option>
-                    <option value="Not Interested">Not Interested</option>
-                </select>
-
-                <button onclick="bulkDelete()" class="danger">Delete Selected</button>
-            </div>
-
-            <!-- TABLE -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Select</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Location</th>
-                        <th>Follow-Up</th>
-                        <th>Status</th>
-                        <th>Bucket</th>
-                        <th>Quick Note</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody id="recruitTableBody">
-                    <!-- Filled by script.js -->
-                </tbody>
-            </table>
-
+        <div class="filterGroup">
+          <label>Status</label>
+          <select id="statusFilter" onchange="updateSearch()">
+            <option value="all">All</option>
+            <option value="New">New</option>
+            <option value="Attempted Contact">Attempted Contact</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Interview Scheduled">Interview Scheduled</option>
+            <option value="Interviewed">Interviewed</option>
+            <option value="Hired">Hired</option>
+            <option value="Closed">Closed</option>
+          </select>
         </div>
 
+        <div class="filterGroup">
+          <label>Sort by</label>
+          <select id="sortBy" onchange="updateSearch()">
+            <option value="recentAdded">Recently added</option>
+            <option value="nameAZ">Name (A–Z)</option>
+          </select>
+        </div>
+
+        <div class="filterGroup filterCount">
+          <span id="candidateCount"></span>
+        </div>
+      </div>
     </div>
+
+    <!-- TABLE CARD -->
+    <div class="sectionBox card">
+
+      <!-- BULK ACTIONS (UI only for now) -->
+      <div id="bulkActions">
+        <label>Bulk Actions:</label>
+
+        <select disabled>
+          <option value="">Change Status...</option>
+        </select>
+
+        <select disabled>
+          <option value="">Move to Bucket...</option>
+        </select>
+
+        <button class="danger" disabled>Delete Selected</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Location</th>
+            <th>Follow-Up</th>
+            <th>Status</th>
+            <th>Bucket</th>
+            <th>Quick Note</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="recruitTableBody">
+          <!-- Filled by script.js -->
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 
 </body>
 </html>
