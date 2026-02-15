@@ -1,64 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add New Lead - Acutec ATS</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+  <title>Add New Lead - Acutec ATS</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 
 <body>
 
-    <!-- TOP BAR -->
-    <div id="topBar">
-        <div class="title">Add New Lead</div>
-        <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+  <div id="topBar">
+    <div class="title">Add New Lead</div>
+    <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+  </div>
+
+  <div id="sideNav">
+    <a href="home.html">Home</a>
+    <a href="recruiting.html">Talent Search</a>
+    <a class="active" href="add_lead.html">Add Lead</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <div id="main">
+    <h1>Add Candidate</h1>
+
+    <div class="formBox">
+      <div class="formRow">
+        <label>Name</label>
+        <input type="text" id="newName" placeholder="John Doe">
+      </div>
+
+      <div class="formRow">
+        <label>Phone</label>
+        <input type="text" id="newPhone" placeholder="814-555-1234">
+      </div>
+
+      <div class="formRow">
+        <label>Email</label>
+        <input type="email" id="newEmail" placeholder="example@email.com">
+      </div>
+
+      <div class="formRow">
+        <label>Location</label>
+        <input type="text" id="newLocation" placeholder="City, State">
+      </div>
+
+      <button onclick="saveNewLead()" style="width:100%; margin-top:10px;">Save Lead</button>
     </div>
-
-    <!-- SIDE NAV -->
-    <div id="sideNav">
-        <a href="home.html">Home</a>
-        <a href="recruiting.html">Talent Search</a>
-        <a href="add_lead.html">Add Lead</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </div>
-
-    <!-- MAIN -->
-    <div id="main">
-
-        <h1>Add Candidate</h1>
-
-        <div class="formBox">
-            
-            <!-- NAME -->
-            <div class="formRow">
-                <label>Name</label>
-                <input type="text" id="newName" placeholder="John Doe">
-            </div>
-
-            <!-- PHONE -->
-            <div class="formRow">
-                <label>Phone</label>
-                <input type="text" id="newPhone" placeholder="814-555-1234">
-            </div>
-
-            <!-- EMAIL -->
-            <div class="formRow">
-                <label>Email</label>
-                <input type="email" id="newEmail" placeholder="example@email.com">
-            </div>
-
-            <!-- LOCATION -->
-            <div class="formRow">
-                <label>Location</label>
-                <input type="text" id="newLocation" placeholder="City, State">
-            </div>
-
-            <button onclick="saveNewLead()" style="width:100%; margin-top:10px;">Save Lead</button>
-
-        </div>
-
-    </div>
+  </div>
 
 </body>
 </html>
