@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candidate Profile - Acutec ATS</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
@@ -26,20 +29,29 @@
     <!-- MAIN -->
     <div id="main">
 
-        <h1>Candidate Details</h1>
+        <div class="dashboardHeader">
+            <div>
+                <h1>Candidate Details</h1>
+                <p class="cardSubtitle">Opened from the Follow-up Calendar or Talent Search.</p>
+            </div>
+            <div>
+                <a class="link" href="recruiting.html">&larr; Back to Talent Search</a>
+            </div>
+        </div>
 
-        <div id="profileContainer">
+        <div id="profileContainer" class="sectionBox card cardLarge" style="max-width: 720px;">
 
             <!-- NAME -->
             <div class="profileRow">
                 <label>Name</label>
-                <input type="text" id="profileName">
+                <input type="text" id="profileName" readonly>
+                <div class="helpText">Name is managed in the lead record.</div>
             </div>
 
             <!-- PHONE -->
             <div class="profileRow">
                 <label>Phone</label>
-                <input type="text" id="profilePhone">
+                <input type="text" id="profilePhone" readonly>
                 <div>
                     <a id="profilePhoneLink" class="link" href="#">Call this number</a>
                 </div>
@@ -48,7 +60,7 @@
             <!-- EMAIL -->
             <div class="profileRow">
                 <label>Email</label>
-                <input type="email" id="profileEmail">
+                <input type="email" id="profileEmail" readonly>
                 <div>
                     <a id="profileEmailLink" class="link" href="#">Send Email</a>
                 </div>
@@ -57,7 +69,13 @@
             <!-- LOCATION -->
             <div class="profileRow">
                 <label>Location</label>
-                <input type="text" id="profileLocation">
+                <input type="text" id="profileLocation" placeholder="City, State">
+            </div>
+
+            <!-- FOLLOW-UP -->
+            <div class="profileRow">
+                <label>Follow-up Date</label>
+                <input type="date" id="profileFollowUp">
             </div>
 
             <!-- STATUS -->
@@ -89,40 +107,16 @@
             </div>
 
             <!-- NOTES -->
-            <h3>Notes</h3>
+            <h3 style="margin-top: 18px;">Notes</h3>
+            <textarea id="profileNotes" placeholder="Add notes about this candidate..."></textarea>
 
-            <div id="notesList"></div>
-
-            <textarea id="newNoteText" placeholder="Add a new note..."></textarea>
-            <button onclick="addNoteToProfile()">Add Note</button>
-
-            <br><br>
-            <button onclick="saveProfile()" style="width:100%;">Save Profile</button>
+            <br>
+            <button id="saveProfileBtn" style="width:100%;">Save Profile</button>
 
         </div>
 
     </div>
 
-    <script>
-        // Profile-specific helper to add notes
-        function addNoteToProfile() {
-            let id = parseInt(localStorage.getItem("currentProfile"));
-            let txt = document.getElementById("newNoteText").value.trim();
-            if (!txt) return;
-            addNote(id, txt);
-            document.getElementById("newNoteText").value = "";
-        }
-
-        // After DOM loaded, link phone + email click actions
-        document.addEventListener("DOMContentLoaded", () => {
-            let id = parseInt(localStorage.getItem("currentProfile"));
-            let c = candidates.find(x => x.id === id);
-            if (!c) return;
-
-            document.getElementById("profilePhoneLink").href = "tel:" + c.phone.replace(/\D/g, "");
-            document.getElementById("profileEmailLink").href = "mailto:" + c.email;
-        });
-    </script>
-
 </body>
+
 </html>
