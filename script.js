@@ -23,6 +23,11 @@ const API = {
     if (document.getElementById("calendarGrid")) {
       initDashboard();
     }
+
+  // Candidate profile page
+  if (document.getElementById("profileContainer")) {
+    initCandidateProfile();
+  }
   });
   
   // -----------------------------
@@ -64,7 +69,9 @@ const API = {
   
       tr.innerHTML = `
         <td><input type="checkbox" class="rowCheck" data-id="${lead.id}"></td>
-        <td>${escapeHtml(fullName)}</td>
+        <td>
+          <a class="link" href="candidate_profile.html?id=${encodeURIComponent(lead.id)}">${escapeHtml(fullName || "(No name)")}</a>
+        </td>
         <td>${escapeHtml(lead.phone || "")}</td>
         <td>${escapeHtml(lead.email || "")}</td>
         <td>
@@ -384,7 +391,10 @@ const API = {
   
       const dot = document.createElement("div");
       dot.className = "calendarDot";
-      if (followupsByDate[key]?.length) dot.classList.add("hasFollowups");
+      if (followupsByDate[key]?.length) {
+        dot.classList.add("hasFollowups");
+        cell.classList.add("hasFollowups");
+      }
   
       top.appendChild(num);
       top.appendChild(dot);
@@ -431,10 +441,18 @@ const API = {
     items.forEach((it) => {
       const row = document.createElement("div");
       row.className = "followupRow";
+
+      const href = `candidate_profile.html?id=${encodeURIComponent(it.id)}`;
       row.innerHTML = `
-        <div class="followupName">${escapeHtml(it.name)}</div>
+        <div class="followupName"><a class="link" href="${href}">${escapeHtml(it.name || "(No name)")}</a></div>
         <div class="followupMeta">${escapeHtml(it.status)} • ${escapeHtml(it.bucket)}</div>
       `;
+
+      // Make the whole row clickable (but keep normal link behavior too)
+      row.addEventListener("click", (e) => {
+        if (e.target && e.target.closest && e.target.closest("a")) return;
+        window.location.href = href;
+      });
       list.appendChild(row);
     });
   }
@@ -444,6 +462,122 @@ const API = {
     const m = String(d.getMonth() + 1).padStart(2, "0");
     const day = String(d.getDate()).padStart(2, "0");
     return `${y}-${m}-${day}`;
+  }
+
+  // -----------------------------
+  // CANDIDATE PROFILE
+  // -----------------------------
+  function getQueryParam(name) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(name);
+  }
+
+  async function initCandidateProfile() {
+    const container = document.getElementById("profileContainer");
+    if (!container) return;
+
+    const idParam = getQueryParam("id") || localStorage.getItem("currentProfile");
+    const id = Number(idParam);
+    if (!id || Number.isNaN(id)) {
+      container.innerHTML = `<div class="emptyState">No candidate selected. Go back to <a class="link" href="recruiting.html">Talent Search</a>.</div>`;
+      return;
+    }
+
+    // Persist for backward compatibility with older pages
+    localStorage.setItem("currentProfile", String(id));
+
+    try {
+      const res = await fetch(API.getLeads);
+      const data = await res.json();
+      if (data.status !== "success") throw new Error(data.message || "Failed to load candidate");
+
+      const lead = (data.leads || []).find((l) => Number(l.id) === id);
+      if (!lead) {
+        container.innerHTML = `<div class="emptyState">Candidate not found. Go back to <a class="link" href="recruiting.html">Talent Search</a>.</div>`;
+        return;
+      }
+
+      fillCandidateProfileForm(lead);
+    } catch (err) {
+      container.innerHTML = `<div class="emptyState">Failed to load candidate. ${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  function fillCandidateProfileForm(lead) {
+    const fullName = `${lead.first_name || ""} ${lead.last_name || ""}`.trim();
+
+    const nameEl = document.getElementById("profileName");
+    const phoneEl = document.getElementById("profilePhone");
+    const emailEl = document.getElementById("profileEmail");
+    const locationEl = document.getElementById("profileLocation");
+    const statusEl = document.getElementById("profileStatus");
+    const bucketEl = document.getElementById("profileBucket");
+    const followEl = document.getElementById("profileFollowUp");
+    const notesEl = document.getElementById("profileNotes");
+
+    if (nameEl) nameEl.value = fullName;
+    if (phoneEl) phoneEl.value = lead.phone || "";
+    if (emailEl) emailEl.value = lead.email || "";
+    if (locationEl) locationEl.value = lead.location || "";
+    if (statusEl) statusEl.value = lead.status || "New";
+    if (bucketEl) bucketEl.value = lead.bucket || "New Lead";
+    if (followEl) followEl.value = (lead.follow_up || "").slice(0, 10);
+    if (notesEl) notesEl.value = lead.notes || "";
+
+    // Helpful action links
+    const phoneLink = document.getElementById("profilePhoneLink");
+    if (phoneLink) {
+      const digits = String(lead.phone || "").replace(/\D/g, "");
+      phoneLink.href = digits ? `tel:${digits}` : "#";
+      phoneLink.classList.toggle("disabled", !digits);
+    }
+    const emailLink = document.getElementById("profileEmailLink");
+    if (emailLink) {
+      emailLink.href = lead.email ? `mailto:${lead.email}` : "#";
+      emailLink.classList.toggle("disabled", !lead.email);
+    }
+
+    const saveBtn = document.getElementById("saveProfileBtn");
+    if (saveBtn) {
+      saveBtn.onclick = () => saveCandidateProfile(Number(lead.id));
+    }
+  }
+
+  async function saveCandidateProfile(id) {
+    const locationEl = document.getElementById("profileLocation");
+    const statusEl = document.getElementById("profileStatus");
+    const bucketEl = document.getElementById("profileBucket");
+    const followEl = document.getElementById("profileFollowUp");
+    const notesEl = document.getElementById("profileNotes");
+
+    const payload = {
+      id,
+      location: locationEl ? locationEl.value : "",
+      status: statusEl ? statusEl.value : "New",
+      bucket: bucketEl ? bucketEl.value : "New Lead",
+      follow_up: followEl ? followEl.value : "",
+      notes: notesEl ? notesEl.value : "",
+    };
+
+    try {
+      const res = await fetch(API.updateLead, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.status !== "success") throw new Error(data.message || "Save failed");
+
+      // Refresh local cache if present
+      const idx = allLeads.findIndex((l) => Number(l.id) === Number(id));
+      if (idx !== -1) {
+        allLeads[idx] = { ...allLeads[idx], ...payload };
+      }
+
+      alert("Profile saved.");
+    } catch (err) {
+      alert("Save failed: " + err.message);
+    }
   }
   
   // -----------------------------

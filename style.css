@@ -563,6 +563,12 @@ tr:hover {
     background: #f2f4f5;
 }
 
+/* Subtle highlight for days that have follow-ups */
+.calendarCell.hasFollowups {
+    border-color: #005f56;
+    box-shadow: 0 0 0 2px rgba(0, 95, 86, 0.08);
+}
+
 .calendarBlank {
     background: transparent;
     border: none;
@@ -614,6 +620,18 @@ tr:hover {
 .followupName {
     font-weight: 700;
     color: #005f56;
+}
+
+/* Utility */
+.helpText {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+}
+
+.link.disabled {
+    pointer-events: none;
+    opacity: 0.6;
 }
 
 .followupMeta {
