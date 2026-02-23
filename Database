@@ -1,44 +1,18 @@
-CREATE TABLE users (
-    user_id       INT AUTO_INCREMENT PRIMARY KEY,
-    username      VARCHAR(50) UNIQUE NOT NULL,
-    email         VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name     VARCHAR(100) NOT NULL,
-    role          ENUM('recruiter', 'admin', 'hiring_manager') NOT NULL DEFAULT 'recruiter',
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login    TIMESTAMP NULL DEFAULT NULL,
-    is_active     TINYINT(1) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `role` enum('recruiter','admin') DEFAULT 'recruiter',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE INDEX idx_users_email    ON users(email);
-CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_users_role     ON users(role);
+INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `full_name`, `role`, `created_at`) VALUES
+(1, 'cameron', 'cameron@acutec.com', '$2a$10$y/4MHfSUwhV/hYzkk15S5uj6On5DIlGbqaEjXLvCibzGPM5m9mNWy', 'Cameron DeMaison', 'recruiter', '2026-02-09 11:24:35');
 
-CREATE TABLE candidates (
-    candidate_id   INT AUTO_INCREMENT PRIMARY KEY,
-    first_name     VARCHAR(50) NOT NULL,
-    last_name      VARCHAR(50) NOT NULL,
-    email          VARCHAR(100) DEFAULT NULL,
-    phone          VARCHAR(20) DEFAULT NULL,
-    linkedin_url   VARCHAR(255) DEFAULT NULL,
-    resume_path    VARCHAR(255) DEFAULT NULL,
-    source         VARCHAR(50) DEFAULT NULL,
-    current_stage  ENUM(
-        'New Lead',
-        'Contacted',
-        'Screening',
-        'Interview',
-        'Selected',
-        'Archived'
-    ) NOT NULL DEFAULT 'New Lead',
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_by     INT DEFAULT NULL,
-    FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE INDEX idx_candidates_name   ON candidates(first_name, last_name);
-CREATE INDEX idx_candidates_email  ON candidates(email);
-CREATE INDEX idx_candidates_stage  ON candidates(current_stage);
-CREATE INDEX idx_candidates_source ON candidates(source);
-
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
