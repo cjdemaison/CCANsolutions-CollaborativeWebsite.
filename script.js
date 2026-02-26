@@ -119,7 +119,14 @@ const API = {
       if (idx !== -1) {
         allLeads[idx] = { ...allLeads[idx], ...fields };
       }
-  
+
+      // Refresh calendar if follow-up was changed and dashboard is visible
+      if (fields.follow_up !== undefined && document.getElementById("calendarGrid")) {
+        rebuildFollowupsFromLeads();
+        buildCalendar();
+      }
+
+        
       // If home page is open and we changed follow_up, refresh followups view
       if (document.getElementById("calendarGrid") && fields.follow_up !== undefined) {
         rebuildFollowupsFromLeads();
@@ -518,7 +525,38 @@ const API = {
       list.appendChild(row);
     });
   }
-  
+
+function statusOptions(selected) {
+  const options = [
+    "New",
+    "Attempted Contact",
+    "Contacted",
+    "Interview Scheduled",
+    "Interviewed",
+    "Hired",
+    "Closed"
+  ];
+  return options
+    .map(o => `<option ${o === selected ? "selected" : ""}>${o}</option>`)
+    .join("");
+}
+
+function bucketOptions(selected) {
+  const options = [
+    "New Lead",
+    "Hot Lead",
+    "Contact Later",
+    "CNC",
+    "Quality",
+    "Skilled",
+    "Not Interested"
+  ];
+  return options
+    .map(o => `<option value="${o}" ${o === selected ? "selected" : ""}>${o}</option>`)
+    .join("");
+}
+
+
   // -----------------------------
   // HELPERS
   // -----------------------------
