@@ -18,11 +18,17 @@ The purpose of this project is to demonstrate:
 
 The system simulates an internal recruiting dashboard with talent management and follow-up tracking features.
 
+This system is also deployed to a live production environment.
+
+Live Site:  
+https://acutectalent.com
+
 ---
 
 ## 2. Setup & Installation
 
 ### Dependencies
+
 - Web Browser (Chrome recommended)
 - MAMP (for local PHP/MySQL environment)
 - Git
@@ -33,20 +39,51 @@ The system simulates an internal recruiting dashboard with talent management and
 
 ### Local Environment Setup (MAMP)
 
-1. Place the project folder inside:
+1. Place the project folder inside:  
    /Applications/MAMP/htdocs/CCANsolutions
 
 2. Start MAMP.
 
-3. Visit in browser:
+3. Visit in browser:  
    http://localhost:8888/CCANsolutions/home.html
 
-4. Database management:
+4. Database management:  
    http://localhost:8888/phpMyAdmin
 
 ---
 
-## 3. Features & Usage
+## 3. Production Deployment (Hostinger)
+
+This system is deployed using:
+
+- Hostinger Web Hosting
+- Custom domain: acutectalent.com
+- PHP backend
+- MySQL database
+- Public hosting environment
+
+Deployment structure:
+
+public_html/
+
+- home.html
+- recruiting.html
+- candidate_profile.html
+- script.js
+- style.css
+- api/
+- dbconnection.php
+
+The live deployment allows full system functionality including:
+
+- Viewing candidates
+- Editing candidate data
+- Follow-up tracking
+- Profile navigation
+
+---
+
+## 4. Features & Usage
 
 ### Dashboard
 
@@ -71,10 +108,13 @@ The system simulates an internal recruiting dashboard with talent management and
 - Bulk actions support
 - Follow-up date field
 - Location and candidate metadata display
+- Clickable candidate profile navigation
+  - Clicking a candidate name opens the full candidate profile page
+  - Phone numbers and email addresses are clickable for direct contact
 
 ---
 
-### Backend (API Folder)
+## 5. Backend (API Folder)
 
 The /api directory contains backend PHP endpoints that:
 
@@ -86,15 +126,17 @@ The /api directory contains backend PHP endpoints that:
 
 ---
 
-## 4. Database
+## 6. Database
 
-- MySQL (via phpMyAdmin)
+- MySQL (phpMyAdmin and Hostinger)
 - Storage engine: InnoDB
 - Collation: utf8mb4_unicode_ci
 
 Leads table includes:
+
 - id
-- name
+- first_name
+- last_name
 - phone
 - email
 - location
@@ -105,39 +147,38 @@ Leads table includes:
 
 ---
 
-## 5. Development Workflow
+## 7. Development Workflow
 
 This project follows a structured Git branching strategy:
 
-- main  
-  Stable production-ready code only
+main  
+Stable production-ready code only
 
-- develop  
-  Main integration branch
+develop  
+Main integration branch
 
-- feature/*  
-  Individual feature branches  
-  Example: feature/dashboard-calendar  
-  Example: feature/talent-search-updates  
+feature/*  
+Individual feature branches  
 
-### Workflow Process
+Workflow Process:
 
 1. Create feature branch
 2. Implement changes
-3. Commit with descriptive message
+3. Commit changes
 4. Submit pull request
-5. Review and merge into develop
-6. Merge develop into main
+5. Review and merge
+6. Deploy to production
 
 ---
 
-## 6. Sprint Technical Logs
+## 8. Sprint Technical Logs
 
 For detailed planning, testing, and progress tracking, see:
 
 SPRINT_LOG.md
 
 Includes:
+
 - Task assignments
 - UI implementation notes
 - Backend development
@@ -146,9 +187,10 @@ Includes:
 
 ---
 
-## 7. Current Sprint Progress
+## 9. Current Sprint Progress
 
 ### Completed
+
 - Dashboard calendar UI implementation
 - To-Do section UI
 - Talent Search functional controls
@@ -156,8 +198,36 @@ Includes:
 - Backend API structure
 - Encoding fixes
 - Local environment documentation
+- Clickable candidate profile implementation
+- Live deployment to Hostinger
 
 ### In Progress
+
 - Calendar follow-up persistence
-- To-Do backend integration
-- Branch refinement
+- Login system integration
+- Authentication system
+
+---
+
+## 10. Recent Feature Update – Clickable Candidate Profiles
+
+Users can now click a candidate’s name from:
+
+- Talent Search page
+- Dashboard follow-up calendar
+
+This opens the candidate profile page.
+
+Phone numbers and email addresses are also clickable.
+
+This improves recruiter workflow and navigation efficiency.
+
+---
+
+## 11. Live Production System
+
+Production URL:
+
+https://acutectalent.com
+
+This version connects to a live MySQL database and demonstrates full system functionality in a real hosting environment.
