@@ -7,655 +7,278 @@ body {
     margin: 0;
     padding: 0;
     background: #f4f6f5;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #222;
+    font-family: Arial, sans-serif;
 }
 
-h1, h2, h3 {
-    margin: 10px 0;
-    font-weight: 600;
-}
-
-a {
-    color: #005f56;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* LAYOUT ------------------- */
+/* TOP BAR ------------------ */
 #topBar {
-    height: 60px;
-    background: #005f56;
+    background: #0b5f57;
     color: white;
+    padding: 15px 20px;
     display: flex;
-    align-items: center;
-    padding: 0 20px;
-    font-size: 20px;
     justify-content: space-between;
+    align-items: center;
 }
 
 #topBar .title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
 }
 
 #logoutBtn {
     background: white;
-    color: #005f56;
+    color: #0b5f57;
     border: none;
-    padding: 6px 12px;
-    border-radius: 999px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 600;
-}
-#logoutBtn:hover {
-    background: #e3e3e3;
 }
 
+#logoutBtn:hover {
+    opacity: 0.85;
+}
+
+/* SIDE NAV ----------------- */
 #sideNav {
     width: 220px;
-    background: #003f3a;
-    position: fixed;
-    top: 60px;
-    bottom: 0;
+    background: #0b5f57;
     color: white;
-    padding-top: 10px;
+    position: fixed;
+    top: 55px;
+    bottom: 0;
+    left: 0;
+    padding: 20px 10px;
 }
 
 #sideNav a {
     display: block;
-    padding: 12px 20px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
     color: white;
-    font-size: 16px;
+    text-decoration: none;
+    border-radius: 10px;
 }
 
-#sideNav a:hover {
-    background: #005f56;
+#sideNav a:hover,
+#sideNav a.active {
+    background: rgba(255, 255, 255, 0.15);
 }
 
+/* MAIN CONTENT ------------- */
 #main {
-    margin-left: 230px;
-    padding: 24px 32px;
-    max-width: 1200px;
-}
-
-/* DASHBOARD HEADER ------------------- */
-.dashboardHeader {
-    margin-bottom: 20px;
-}
-
-.dashboardHeader h1 {
-    margin: 0 0 4px 0;
-    font-size: 26px;
-}
-
-.dashboardDate {
-    margin: 0;
-    color: #666;
-    font-size: 14px;
-}
-
-/* DASHBOARD GRID ------------------- */
-.dashboardGrid {
-    display: grid;
-    grid-template-columns: 2fr 1.3fr;
-    gap: 24px;
-    align-items: flex-start;
-}
-
-/* Cards reuse .sectionBox styling */
-.sectionBox {
-    background: white;
+    margin-left: 240px;
     padding: 20px;
-    box-shadow: 0 0 5px #ccc;
-    border-radius: 12px;
-    margin-bottom: 20px;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+/* CARDS -------------------- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
 }
 
 .card {
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-.cardLarge {
-    min-height: 260px;
+.card h2 {
+    margin: 0 0 10px 0;
 }
 
-.cardSubtitle {
-    font-size: 14px;
-    color: #666;
-    margin: 0 0 12px 0;
+.muted {
+    color: #6b7280;
 }
 
-/* BUTTONS ------------------- */
-button {
-    padding: 6px 14px;
-    border: none;
-    background: #005f56;
-    color: white;
+.pill {
+    background: #e7f3f2;
+    color: #0b5f57;
+    padding: 6px 10px;
     border-radius: 999px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-button:hover {
-    background: #00786d;
-}
-
-button.danger {
-    background: #a83232;
-}
-
-button.danger:hover {
-    background: #cc3a3a;
-}
-
-/* secondary (outline) button */
-.secondaryBtn {
-    background: #f4f6f5;
-    color: #555;
-    border: 1px solid #d3d7da;
-    box-shadow: none;
-}
-.secondaryBtn:hover {
-    background: #e9ecef;
-}
-
-/* small round buttons for month arrows */
-button.circleBtn {
-    width: 28px;
-    height: 28px;
+/* LISTS -------------------- */
+.cleanList {
+    list-style: none;
     padding: 0;
-    border-radius: 50%;
-    background: white;
-    color: #555;
-    border: 1px solid #d3d7da;
-    box-shadow: none;
+    margin: 0;
 }
 
-button.circleBtn:hover {
-    background: #f2f4f5;
-}
-
-/* INPUTS ------------------- */
-input[type="text"],
-input[type="email"],
-input[type="date"],
-select,
-textarea {
-    width: 97%;
-    padding: 7px;
-    margin-top: 5px;
-    border: 1px solid #d3d7da;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-textarea {
-    height: 100px;
-}
-
-/* TODO ROW ------------------- */
-.todoInputRow {
+.cleanList li {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.todoInputRow input {
-    flex: 1;
-    width: auto;
-}
-
-/* TABLE ------------------- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    box-shadow: 0 0 5px #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    text-align: left;
-    font-size: 14px;
-}
-
-th {
-    background: #e3efed;
-    font-weight: bold;
-    cursor: grab;
-}
-
-tr:hover {
-    background: #f7f7f7;
-}
-
-.clickable {
-    color: #005f56;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* PROFILE PAGE ------------------- */
-#profileContainer {
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 5px #bbb;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
-    width: 90%;
-    max-width: 700px;
-}
-
-.profileRow {
-    margin-bottom: 15px;
-}
-
-.noteItem {
-    padding: 10px;
-    background: #f1f8f7;
-    border-left: 4px solid #005f56;
     margin-bottom: 10px;
-    border-radius: 6px;
+    background: #fff;
 }
 
-/* HOME DASHBOARD ITEMS ------------------- */
-.calendarItem {
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-}
-
-.calendarItem:last-child {
-    border-bottom: none;
-}
-
-.calName {
-    font-weight: bold;
-    color: #005f56;
-    cursor: pointer;
-}
-
-#todoList .todoItem {
-    display: flex;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
-
-#todoList .todoItem:last-child {
-    border-bottom: none;
-}
-
-#todoList .done {
-    text-decoration: line-through;
-    color: #777;
-}
-
-/* CALENDAR GRID ------------------- */
-.calendarHeaderRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-}
-
-.monthNav {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-}
-
-.calendarGrid {
-    width: 100%;
-}
-
-.calendarTable {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-    font-size: 13px;
-    text-align: center;
-}
-
-.calendarTable th {
-    padding: 6px 0;
-    border-bottom: none;
-    background: transparent;
-    color: #777;
-    cursor: default;
-}
-
-.calendarTable td {
-    height: 34px;
-    padding: 2px;
-    border-bottom: none;
-    cursor: default;
-}
-
-.calendarTable td.empty {
-    cursor: default;
-}
-
-.calendarDay {
-    border-radius: 8px;
-    cursor: pointer;
-    border: 1px solid transparent;
-}
-
-.calendarDay:hover {
-    background: #f2f4f5;
-}
-
-.calendarDay.selectedDay {
-    border-color: #005f56;
-    background: #e9f5f3;
-    font-weight: 600;
-}
-
-.calendarDay.hasFollowup::after {
-    content: "";
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #005f56;
-    margin-left: 4px;
-    vertical-align: middle;
-}
-
-/* FOLLOW-UP LIST BELOW CALENDAR */
-.cardDivider {
-    border: none;
-    border-top: 1px solid #e5e5e5;
-    margin: 16px 0;
-}
-
-.followupsHeader {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-/* SEARCH / TALENT PAGE ------------------- */
-.searchCard {
-    margin-bottom: 16px;
-}
-
-.searchHeaderRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 12px;
-}
-
-.searchHeaderRow h1 {
-    margin: 0 0 4px 0;
-}
-
-.searchHeaderActions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.searchBarRow {
-    margin-bottom: 10px;
-}
-
-.searchBarRow input {
-    width: 100%;
-}
-
-.filterRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: flex-end;
-}
-
-.filterGroup {
-    display: flex;
-    flex-direction: column;
-    font-size: 13px;
-}
-
-.filterGroup label {
-    margin-bottom: 3px;
-    color: #555;
-}
-
-.filterGroup select {
-    width: 180px;
-}
-
-.filterCount {
-    margin-left: auto;
-    font-size: 13px;
-    color: #555;
-    align-items: center;
-}
-
-/* FORMS ------------------- */
-.formBox {
-    background: white;
-    padding: 20px;
-    width: 420px;
-    box-shadow: 0 0 5px #ccc;
-    border-radius: 12px;
-}
-
-.formRow {
-    margin-bottom: 12px;
-}
-
-/* LINKS ------------------- */
-.link {
-    color: #005f56;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.link:hover {
-    text-decoration: underline;
-}
-
-/* RECRUITING PAGE ------------------- */
-#bulkActions {
-    margin-bottom: 15px;
-    padding: 10px;
-    background: white;
-    box-shadow: 0 0 5px #ccc;
-    border-radius: 8px;
-}
-
-#bulkActions select {
-    width: auto;
-}
-
-/* RESPONSIVE ------------------- */
-@media (max-width: 1000px) {
-    #main {
-        margin-left: 0;
-        padding: 16px;
-    }
-
-    #sideNav {
-        position: static;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-    }
-
-    #sideNav a {
-        flex: 1;
-        text-align: center;
-        border-right: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .dashboardGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .formBox {
-        width: 100%;
-    }
-
-    #profileContainer {
-        width: 100%;
-    }
-
-    .searchHeaderRow {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .filterGroup select {
-        width: 150px;
-    }
-}
-/* ===========================
-   PATCH: Calendar + Followups + Todos
-   (Matches script.js class names)
-   Paste at END of style.css
-   =========================== */
-
-   .calendarGrid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    width: 100%;
+/* CALENDAR ----------------- */
+.calendarWrap {
     margin-top: 8px;
 }
 
-.calendarDayHeader {
-    font-size: 12px;
-    color: #777;
-    text-align: center;
-    padding: 6px 0;
-    font-weight: 600;
+.calendarControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
-.calendarCell {
-    background: #fff;
-    border: 1px solid #e6eaea;
-    border-radius: 12px;
-    min-height: 56px;
-    padding: 8px;
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-
-.calendarCell:hover {
-    background: #f2f4f5;
-}
-
-.calendarBlank {
-    background: transparent;
+.calendarControls button {
+    background: #0b5f57;
+    color: white;
     border: none;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.calendarControls button:hover {
+    opacity: 0.85;
+}
+
+#monthLabel {
+    font-weight: bold;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.dow {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: center;
+}
+
+.day {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.day:hover {
+    border-color: #0b5f57;
+}
+
+.day.inactive {
+    opacity: 0.35;
     cursor: default;
 }
 
-.calendarCell.today {
-    border-color: #005f56;
-    background: #e9f5f3;
+.day.selected {
+    border-color: #0b5f57;
+    box-shadow: 0 0 0 2px rgba(11, 95, 87, 0.15) inset;
 }
 
-.calendarCellTop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.calendarDayNumber {
-    font-weight: 700;
-    font-size: 13px;
-    color: #222;
-}
-
-.calendarDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: transparent;
-}
-
-.calendarDot.hasFollowups {
-    background: #005f56;
-}
-
-/* Followups list */
-.followupRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-}
-
-.followupRow:last-child {
-    border-bottom: none;
-}
-
-.followupName {
-    font-weight: 700;
-    color: #005f56;
-}
-
-.followupMeta {
-    font-size: 13px;
-    color: #555;
-}
-
-.emptyState {
-    padding: 10px 0;
-    color: #777;
-    font-size: 14px;
-}
-
-/* Todos */
+/* TODO --------------------- */
 .todoRow {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.todoRow:last-child {
-    border-bottom: none;
-}
-
-.todoLeft {
-    display: flex;
-    align-items: center;
     gap: 10px;
-    font-size: 14px;
+    margin-top: 10px;
 }
 
-.todoDone {
-    text-decoration: line-through;
-    color: #777;
+.todoRow input {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
 }
 
-.todoDelete {
-    background: #a83232;
+.todoRow button {
+    background: #0b5f57;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
 }
 
-.todoDelete:hover {
-    background: #cc3a3a;
+.todoRow button:hover {
+    opacity: 0.85;
+}
+
+/* BUTTONS ------------------ */
+button.danger,
+.dangerSmall {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+button.danger:hover,
+.dangerSmall:hover {
+    opacity: 0.85;
+}
+
+/* TABLES + INPUTS ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-family: Arial, sans-serif;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+/* MOBILE ------------------- */
+@media (max-width: 900px) {
+    #sideNav {
+        display: none;
+    }
+
+    #main {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Clickable links */
+a.link {
+    text-decoration: underline;
+    cursor: pointer;
 }
