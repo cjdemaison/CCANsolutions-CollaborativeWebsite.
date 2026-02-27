@@ -13,7 +13,6 @@ try {
       follow_up,
       status,
       bucket,
-      source,
       notes,
       created_at
     FROM leads
