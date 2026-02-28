@@ -1,24 +1,20 @@
 <?php
-// api/db.php
-header("Content-Type: application/json");
+declare(strict_types=1);
 
-$host = "localhost";
-$db   = "ccan";
-$user = "root";
-$pass = "root"; // MAMP default
-$port = 8889;   // your MySQL port in MAMP
+$dbHost = 'localhost';
+$dbPort = 3306;
+$dbName = 'u564515980_ats_prod';
+$dbUser = 'u564515980_ats_prod';
+$dbPass = 'AcutecATS!2026'; // this is your MySQL user password (NOT your website login)
 
 try {
-  $pdo = new PDO(
-    "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4",
-    $user,
-    $pass,
-    [
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]
-  );
-} catch (Exception $e) {
-  echo json_encode(["status" => "error", "message" => "DB connection failed", "detail" => $e->getMessage()]);
-  exit;
+    $dsn = "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4";
+    $pdo = new PDO($dsn, $dbUser, $dbPass, [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ]);
+} catch (PDOException $e) {
+    http_response_code(500);
+    exit("Database connection failed: " . $e->getMessage());
 }
