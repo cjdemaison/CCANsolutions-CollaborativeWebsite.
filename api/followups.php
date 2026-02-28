@@ -1,4 +1,6 @@
 <?php
+
+require_once __DIR__ . '/../require_login.php';
 // /api/followups.php
 declare(strict_types=1);
 
