@@ -1,9 +1,10 @@
+<?php require __DIR__ . '/require_login.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>Acutec ATS - Talent Search</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js?v=3" defer></script>
+  <script src="script.js?v=4" defer></script>
 </head>
 
 <body>
@@ -11,16 +12,16 @@
   <!-- TOP BAR -->
   <div id="topBar">
     <div class="title">Talent Search</div>
-    <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+    <button id="logoutBtn" onclick="window.location='/logout.php'">Logout</button>
   </div>
 
   <!-- SIDE NAV -->
   <div id="sideNav">
-    <a href="home.html">Home</a>
-    <a href="recruiting.html" class="active">Talent Search</a>
-    <a href="add_lead.html">Add Lead</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+    <a href="home.php">Home</a>
+    <a href="recruiting.php" class="active">Talent Search</a>
+    <a href="add_lead_page.php">Add Lead</a>
+    <a href="about.php">About</a>
+    <a href="contact.php">Contact</a>
   </div>
 
   <!-- MAIN -->
