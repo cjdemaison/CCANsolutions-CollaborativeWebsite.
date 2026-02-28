@@ -1,3 +1,4 @@
+<?php require __DIR__ . '/require_login.php'; ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -47,7 +48,7 @@
   <div class="topbar">
     <div style="font-weight:800;">Acutec ATS</div>
     <div>
-      <button onclick="window.location='login.html'" style="background:#fff; color:#0b5f57; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;">
+      <button onclick="window.location='login.php'" style="background:#fff; color:#0b5f57; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;">
         Logout
       </button>
     </div>
@@ -56,11 +57,11 @@
   <div class="page-wrap">
     <aside class="sidebar">
       <div style="font-weight:900; margin-bottom:16px;">Navigation</div>
-      <a class="active" href="home.html">Home</a>
-      <a href="recruiting.html">Talent Search</a>
-      <a href="add_lead.html">Add Lead</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a class="active" href="home.php">Home</a>
+      <a href="recruiting.php">Talent Search</a>
+      <a href="add_lead_page.php">Add Lead</a>
+      <a href="about.php">About</a>
+      <a href="contact.php">Contact</a>
     </aside>
 
     <main class="main">
@@ -231,7 +232,7 @@
         li.innerHTML = `
           <div>
             <strong>
-              <a class="link" href="candidate_profile.html?id=${l.id}">
+              <a class="link" href="candidate_profile.php?id=${l.id}">
                 ${name}
               </a>
             </strong>
