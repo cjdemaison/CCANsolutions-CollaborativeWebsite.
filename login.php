@@ -1,111 +1,85 @@
 <?php
-//  error display
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
-require 'dbconnection.php';
+require 'db.php';
 
-$error = '';           //  error message
-$field_error = '';     //  error for empty fields
+$error = '';
+$field_error = '';
 
-if (isset($_GET['email']) && isset($_GET['password'])) {
-    $email    = trim($_GET['email']);
-    $password = $_GET['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Check if fields are empty
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
     if ($email === '' || $password === '') {
+
         $field_error = "Please fill in both email and password.";
+
     } else {
-        // Try to find the user
+
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
-        $user = $stmt->fetch();
 
-        if ($user && password_verify($password, $user['password_hash'])) {
-            // Success
-            $_SESSION['user_id']    = $user['id'];
-            $_SESSION['full_name']  = $user['full_name'];
-            $_SESSION['role']       = $user['role'];
-            $_SESSION['username']   = $user['username'];
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            header("Location: home.html");
-            exit;
+        if ($user) {
+
+            if (password_verify($password, $user['password_hash'])) {
+
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['full_name'] = $user['full_name'];
+
+                header("Location: home.php");
+                exit;
+
+            } else {
+
+                $error = "Incorrect email or password. Please try again.";
+
+            }
+
         } else {
-            // Wrong credentials
+
             $error = "Incorrect email or password. Please try again.";
+
         }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Acutec ATS - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .error-message {
-            color: red;
-            font-weight: bold;
-            text-align: center;
-            margin: 10px 0;
-            padding: 8px;
-            background-color: #ffebee;
-            border: 1px solid #f44336;
-            border-radius: 4px;
-        }
-    </style>
+<title>Acutec ATS Login</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body style="margin:0; padding:0; background:#f4f6f5;">
 
-    <div id="topBar" style="justify-content:center;">
-        <div class="title">Acutec ATS Login</div>
-    </div>
+<body style="background:#f4f6f5; font-family:Arial;">
 
-    <div style="width:350px; margin:70px auto; background:white; padding:25px; box-shadow:0 0 6px #aaa; border-radius:6px;">
-        <h2 style="text-align:center;">Welcome</h2>
-        <p style="text-align:center; color:#666;">Sign in to access the ATS</p>
+<div style="width:400px;margin:100px auto;background:white;padding:30px;border-radius:10px;box-shadow:0 0 10px #ccc;">
 
-        <!-- Show field empty error -->
-        <?php if ($field_error): ?>
-            <div class="error-message">
-                <?php echo htmlspecialchars($field_error); ?>
-            </div>
-        <?php endif; ?>
+<h1>Welcome</h1>
+<p>Sign in to access the ATS</p>
 
-        <!-- Show wrong credentials error -->
-        <?php if ($error): ?>
-            <div class="error-message">
-                <?php echo htmlspecialchars($error); ?>
-            </div>
-        <?php endif; ?>
+<?php if ($field_error): ?>
+<div style="color:red;"><?php echo $field_error; ?></div>
+<?php endif; ?>
 
-        <!-- Login form using GET -->
-        <form method="get" action="login.php">
-            <div style="margin-bottom:15px;">
-                <label>Email</label>
-                <input type="email" name="email" required 
-                       value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>" 
-                       style="width:100%; padding:8px; margin-top:5px;">
-            </div>
+<?php if ($error): ?>
+<div style="color:red;"><?php echo $error; ?></div>
+<?php endif; ?>
 
-            <div style="margin-bottom:15px;">
-                <label>Password</label>
-                <input type="password" name="password" required 
-                       style="width:100%; padding:8px; margin-top:5px;">
-            </div>
+<form method="POST">
 
-            <button type="submit" style="width:100%; padding:10px; font-size:16px;">
-                Login
-            </button>
-        </form>
+Email<br>
+<input type="email" name="email" style="width:100%;padding:10px;"><br><br>
 
-        <p style="text-align:center; color:#888; margin-top:15px; font-size:0.9em;">
-           
-        </p>
-    </div>
+Password<br>
+<input type="password" name="password" style="width:100%;padding:10px;"><br><br>
+
+<button type="submit" style="width:100%;padding:12px;">Login</button>
+
+</form>
+
+</div>
 
 </body>
 </html>
