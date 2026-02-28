@@ -1,0 +1,298 @@
+<?php require __DIR__ . '/require_login.php'; ?>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Acutec ATS - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Small safety styling in case style.css differs */
+    .page-wrap { display:flex; min-height:100vh; background:#f4f6f5; }
+    .sidebar { width:240px; background:#0b5f57; color:#fff; padding:24px 16px; }
+    .sidebar a { color:#fff; display:block; padding:10px 8px; border-radius:10px; text-decoration:none; opacity:.95; }
+    .sidebar a:hover, .sidebar a.active { background:rgba(255,255,255,.12); }
+    .topbar { background:#0b5f57; color:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; }
+    .main { flex:1; }
+    .content { padding:18px; max-width:1100px; margin:0 auto; }
+    .grid { display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; }
+    .card { background:#fff; border-radius:14px; box-shadow:0 3px 12px rgba(0,0,0,.08); padding:16px; }
+    .card h2 { margin:0 0 10px 0; font-size:18px; }
+    .muted { color:#6b7280; }
+    .pill { background:#e7f3f2; color:#0b5f57; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+    .cal { display:flex; gap:14px; align-items:flex-start; }
+    .cal-left { width:280px; }
+    .cal-right { flex:1; }
+    .cal-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .cal-head button { background:#0b5f57; color:#fff; border:none; border-radius:10px; padding:8px 10px; cursor:pointer; }
+    .cal-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; }
+    .cal-dow { font-size:12px; color:#6b7280; text-align:center; }
+    .day { background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:10px 8px; text-align:center; cursor:pointer; user-select:none; }
+    .day:hover { border-color:#0b5f57; }
+    .day.inactive { opacity:.45; cursor:default; }
+    .day.selected { border-color:#0b5f57; box-shadow:0 0 0 2px rgba(11,95,87,.15) inset; }
+    ul.clean { list-style:none; padding:0; margin:0; }
+    ul.clean li { display:flex; justify-content:space-between; align-items:center; padding:10px 10px; border:1px solid #e5e7eb; border-radius:12px; margin-bottom:10px; background:#fff; }
+    .todo-row { display:flex; gap:10px; margin-top:10px; }
+    .todo-row input { flex:1; padding:10px 12px; border-radius:12px; border:1px solid #e5e7eb; }
+    .todo-row button { background:#0b5f57; color:#fff; border:none; border-radius:12px; padding:10px 12px; cursor:pointer; }
+    @media (max-width: 920px){
+      .grid { grid-template-columns: 1fr; }
+      .sidebar { display:none; }
+      .content { padding:14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div style="font-weight:800;">Acutec ATS</div>
+    <div>
+      <button onclick="window.location='login.php'" style="background:#fff; color:#0b5f57; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;">
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <aside class="sidebar">
+      <div style="font-weight:900; margin-bottom:16px;">Navigation</div>
+      <a class="active" href="home.php">Home</a>
+      <a href="recruiting.php">Talent Search</a>
+      <a href="add_lead_page.php">Add Lead</a>
+      <a href="about.php">About</a>
+      <a href="contact.php">Contact</a>
+    </aside>
+
+    <main class="main">
+      <div class="content">
+
+        <div class="grid">
+
+          <!-- Calendar / Follow-ups -->
+          <section class="card">
+            <h2>Calendar Follow-ups</h2>
+            <div class="muted" style="margin-bottom:12px;">Click a date to see who is scheduled.</div>
+
+            <div class="cal">
+              <div class="cal-left">
+                <div class="cal-head">
+                  <button onclick="prevMonth()">Prev</button>
+                  <div id="monthLabel" style="font-weight:800;"></div>
+                  <button onclick="nextMonth()">Next</button>
+                </div>
+
+                <div class="cal-grid" id="dowRow">
+                  <div class="cal-dow">Sun</div>
+                  <div class="cal-dow">Mon</div>
+                  <div class="cal-dow">Tue</div>
+                  <div class="cal-dow">Wed</div>
+                  <div class="cal-dow">Thu</div>
+                  <div class="cal-dow">Fri</div>
+                  <div class="cal-dow">Sat</div>
+                </div>
+
+                <div class="cal-grid" id="calGrid" style="margin-top:8px;"></div>
+              </div>
+
+              <div class="cal-right">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <div style="font-weight:800;">Scheduled Follow-ups</div>
+                  <div id="selectedLabel" class="muted"></div>
+                </div>
+                <div id="followupCount" class="muted" style="margin-bottom:10px;"></div>
+                <ul class="clean" id="followupList">
+                  <li class="muted">Pick a date to load follow-ups.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Todos -->
+          <section class="card">
+            <h2>To Do</h2>
+            <div class="muted">Quick list (stored on this browser).</div>
+
+            <div class="todo-row">
+              <input id="todoInput" placeholder="Add a task..." />
+              <button onclick="addTodo()">Add</button>
+            </div>
+
+            <ul class="clean" id="todoList" style="margin-top:12px;">
+              <li class="muted">No tasks yet.</li>
+            </ul>
+          </section>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+<script>
+  // API path
+  const API_GET_LEADS = "api/get_leads.php";
+
+  // Calendar state
+  let viewDate = new Date();
+  let selectedDate = new Date();
+
+  function pad(n){ return String(n).padStart(2, "0"); }
+  function ymd(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+
+  function setMonthLabel() {
+    const el = document.getElementById("monthLabel");
+    const options = { month: "long", year: "numeric" };
+    el.textContent = viewDate.toLocaleDateString(undefined, options);
+  }
+
+  function sameDay(a,b){
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
+  }
+
+  function buildCalendar() {
+    setMonthLabel();
+
+    const grid = document.getElementById("calGrid");
+    grid.innerHTML = "";
+
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+
+    const first = new Date(year, month, 1);
+    const startDay = first.getDay();
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+
+    // leading blanks
+    for(let i=0; i<startDay; i++){
+      const blank = document.createElement("div");
+      blank.className = "day inactive";
+      blank.textContent = "";
+      grid.appendChild(blank);
+    }
+
+    for(let day=1; day<=daysInMonth; day++){
+      const d = new Date(year, month, day);
+      const cell = document.createElement("div");
+      cell.className = "day";
+      if (sameDay(d, selectedDate)) cell.classList.add("selected");
+      cell.textContent = day;
+      cell.onclick = () => {
+        selectedDate = d;
+        buildCalendar();
+        loadFollowupsForSelectedDate();
+      };
+      grid.appendChild(cell);
+    }
+
+    document.getElementById("selectedLabel").textContent = ymd(selectedDate);
+  }
+
+  function prevMonth() {
+    viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()-1, 1);
+    buildCalendar();
+  }
+
+  function nextMonth() {
+    viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth()+1, 1);
+    buildCalendar();
+  }
+
+  async function loadFollowupsForSelectedDate() {
+    const list = document.getElementById("followupList");
+    const count = document.getElementById("followupCount");
+
+    list.innerHTML = `<li class="muted">Loading...</li>`;
+    count.textContent = "";
+
+    try {
+      const res = await fetch(API_GET_LEADS, { cache: "no-store" });
+      const data = await res.json();
+
+      if (data.status !== "success") {
+        list.innerHTML = `<li class="muted">${data.message || "Error loading leads"}</li>`;
+        return;
+      }
+
+      const target = ymd(selectedDate);
+      const matches = (data.leads || []).filter(l => (l.follow_up || "") === target);
+
+      count.textContent = `${matches.length} scheduled`;
+      if(matches.length === 0){
+        list.innerHTML = `<li class="muted">No follow-ups scheduled for this date.</li>`;
+        return;
+      }
+
+      list.innerHTML = "";
+      matches.forEach(l => {
+        const li = document.createElement("li");
+        const name = `${l.first_name || ""} ${l.last_name || ""}`.trim() || "(No name)";
+        li.innerHTML = `
+          <div>
+            <strong>
+              <a class="link" href="candidate_profile.php?id=${l.id}">
+                ${name}
+              </a>
+            </strong>
+            <div class="muted" style="font-size:13px;">${l.email || ""} ${l.phone ? "• " + l.phone : ""}</div>
+          </div>
+          <span class="pill">${l.bucket || "Follow-up"}</span>
+        `;
+        list.appendChild(li);
+      });
+
+    } catch(err){
+      list.innerHTML = `<li class="muted">${err.message}</li>`;
+    }
+  }
+
+  // Todos (simple localStorage for now)
+  const TODO_KEY = "acutec_todos_v1";
+  function loadTodos(){
+    const ul = document.getElementById("todoList");
+    const arr = JSON.parse(localStorage.getItem(TODO_KEY) || "[]");
+    ul.innerHTML = "";
+    if(arr.length === 0){
+      ul.innerHTML = `<li class="muted">No tasks yet.</li>`;
+      return;
+    }
+    arr.forEach((t, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <div>${t}</div>
+        <button onclick="removeTodo(${i})" style="background:#ef4444;color:#fff;border:none;border-radius:10px;padding:8px 10px;cursor:pointer;">Remove</button>
+      `;
+      ul.appendChild(li);
+    });
+  }
+
+  function addTodo(){
+    const input = document.getElementById("todoInput");
+    const val = (input.value || "").trim();
+    if(!val) return;
+    const arr = JSON.parse(localStorage.getItem(TODO_KEY) || "[]");
+    arr.push(val);
+    localStorage.setItem(TODO_KEY, JSON.stringify(arr));
+    input.value = "";
+    loadTodos();
+  }
+
+  function removeTodo(i){
+    const arr = JSON.parse(localStorage.getItem(TODO_KEY) || "[]");
+    arr.splice(i, 1);
+    localStorage.setItem(TODO_KEY, JSON.stringify(arr));
+    loadTodos();
+  }
+
+  // Init
+  document.addEventListener("DOMContentLoaded", () => {
+    buildCalendar();
+    loadTodos();
+    loadFollowupsForSelectedDate();
+  });
+</script>
+
+</body>
+</html>
