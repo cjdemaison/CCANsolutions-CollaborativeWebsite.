@@ -1,5 +1,5 @@
 // script.js
-// Works for BOTH recruiting.html + home.html
+// Works for recruiting.php + home.php
 
 const API = {
   getLeads: "/api/get_leads.php",
@@ -15,21 +15,45 @@ let followupsByDate = {};
 // BOOTSTRAP
 // -----------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // Recruiting page
   if (document.getElementById("recruitTableBody")) {
-    loadLeads();
+    loadLeads().then(() => {
+      setupLeadSearch();
+    });
   }
 
-  // Home calendar
   if (document.getElementById("calendarGrid")) {
     loadLeadsForCalendar();
   }
 
-  // Todos page (if you have it wired later)
   if (document.getElementById("todoList")) {
     loadTodos();
   }
 });
+
+// -----------------------------
+// SEARCH
+// -----------------------------
+function setupLeadSearch() {
+  const searchInput = document.getElementById("leadSearch");
+  if (!searchInput) return;
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase().trim();
+    filterLeadRows(searchTerm);
+  });
+}
+
+function filterLeadRows(searchTerm) {
+  const tbody = document.getElementById("recruitTableBody");
+  if (!tbody) return;
+
+  const rows = tbody.querySelectorAll("tr");
+
+  rows.forEach((row) => {
+    const rowText = row.innerText.toLowerCase();
+    row.style.display = rowText.includes(searchTerm) ? "" : "none";
+  });
+}
 
 // -----------------------------
 // LOAD LEADS
@@ -62,6 +86,17 @@ function renderLeads(leads) {
 
   tbody.innerHTML = "";
 
+  if (!leads.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="10" style="text-align:center; padding:20px;">
+          No leads found
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
   leads.forEach((lead) => {
     const fullName = `${lead.first_name || ""} ${lead.last_name || ""}`.trim();
     const status = lead.status || "New";
@@ -73,70 +108,68 @@ function renderLeads(leads) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-        <td><input type="checkbox" class="rowCheck" data-id="${lead.id}"></td>
+      <td><input type="checkbox" class="rowCheck" data-id="${lead.id}"></td>
 
-        <td>
-          <a class="link" href="/candidate_profile.php?id=${lead.id}">
-            ${escapeHtml(fullName || "(No name)")}
-          </a>
-        </td>
+      <td>
+        <a class="link" href="/candidate_profile.php?id=${lead.id}">
+          ${escapeHtml(fullName || "(No name)")}
+        </a>
+      </td>
 
-        <td>
-          ${
-            lead.phone
-              ? `<a class="link" href="tel:${String(lead.phone).replace(/\D/g, "")}">${escapeHtml(lead.phone)}</a>`
-              : ""
-          }
-        </td>
+      <td>
+        ${
+          lead.phone
+            ? `<a class="link" href="tel:${String(lead.phone).replace(/\D/g, "")}">${escapeHtml(lead.phone)}</a>`
+            : ""
+        }
+      </td>
 
-        <td>
-          ${
-            lead.email
-              ? `<a class="link" href="mailto:${escapeAttr(lead.email)}">${escapeHtml(lead.email)}</a>`
-              : ""
-          }
-        </td>
+      <td>
+        ${
+          lead.email
+            ? `<a class="link" href="mailto:${escapeAttr(lead.email)}">${escapeHtml(lead.email)}</a>`
+            : ""
+        }
+      </td>
 
-        <td>
-          <input type="text" value="${escapeAttr(location)}"
-            placeholder="City, State"
-            onblur="saveField(${lead.id}, { location: this.value })">
-        </td>
+      <td>
+        <input type="text" value="${escapeAttr(location)}"
+          placeholder="City, State"
+          onblur="saveField(${lead.id}, { location: this.value })">
+      </td>
 
-        <td>
-          <input type="date" value="${escapeAttr(followUp)}"
-            onchange="saveField(${lead.id}, { follow_up: this.value })">
-        </td>
+      <td>
+        <input type="date" value="${escapeAttr(followUp)}"
+          onchange="saveField(${lead.id}, { follow_up: this.value })">
+      </td>
 
-        <td>
-          <select onchange="saveField(${lead.id}, { status: this.value })">
-            ${statusOptions(status)}
-          </select>
-        </td>
+      <td>
+        <select onchange="saveField(${lead.id}, { status: this.value })">
+          ${statusOptions(status)}
+        </select>
+      </td>
 
-        <td>
-          <select onchange="saveField(${lead.id}, { bucket: this.value })">
-            ${bucketOptions(bucket)}
-          </select>
-        </td>
+      <td>
+        <select onchange="saveField(${lead.id}, { bucket: this.value })">
+          ${bucketOptions(bucket)}
+        </select>
+      </td>
 
-        <td>
-          <textarea placeholder="Notes..." onblur="saveField(${lead.id}, { notes: this.value })">${escapeHtml(
-            notes
-          )}</textarea>
-        </td>
+      <td>
+        <textarea placeholder="Notes..." onblur="saveField(${lead.id}, { notes: this.value })">${escapeHtml(notes)}</textarea>
+      </td>
 
-        <td>
-          <button class="danger" onclick="deleteLead(${lead.id})">Delete</button>
-        </td>
-      `;
+      <td>
+        <button class="danger" onclick="deleteLead(${lead.id})">Delete</button>
+      </td>
+    `;
 
     tbody.appendChild(tr);
   });
 }
 
 // -----------------------------
-// SAVE FIELD (INLINE EDIT)
+// SAVE FIELD
 // -----------------------------
 async function saveField(id, fields) {
   const payload = { id, ...fields };
@@ -174,14 +207,18 @@ async function deleteLead(id) {
     return;
   }
 
-  // If we're on the recruiting page, reload the table
   if (document.getElementById("recruitTableBody")) {
-    loadLeads();
+    loadLeads().then(() => {
+      const searchInput = document.getElementById("leadSearch");
+      if (searchInput) {
+        filterLeadRows(searchInput.value.toLowerCase().trim());
+      }
+    });
   }
 }
 
 // -----------------------------
-// HOME DASHBOARD CALENDAR (your existing logic continues below)
+// HOME DASHBOARD CALENDAR
 // -----------------------------
 async function loadLeadsForCalendar() {
   try {
@@ -201,11 +238,17 @@ async function loadLeadsForCalendar() {
 }
 
 // -----------------------------
-// HELPERS (keep your existing helper functions; included here to avoid breaking)
+// HELPERS
 // -----------------------------
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (s) => {
-    const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" };
+    const map = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    };
     return map[s];
   });
 }
@@ -228,7 +271,6 @@ function bucketOptions(selected) {
     .join("");
 }
 
-// Calendar helpers placeholders (if your home.php relies on these, keep them consistent)
 function groupByFollowupDate(leads) {
   const map = {};
   leads.forEach((l) => {
@@ -240,11 +282,11 @@ function groupByFollowupDate(leads) {
 }
 
 function renderCalendar() {
-  // your existing home.php calendar rendering uses this
+  // your existing calendar rendering
 }
 
 function renderUpcomingFollowups() {
-  // your existing home.php followup list uses this
+  // your existing upcoming followups rendering
 }
 
 function loadTodos() {
