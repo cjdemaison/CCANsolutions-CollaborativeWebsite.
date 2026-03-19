@@ -4,7 +4,7 @@
 <head>
   <title>Acutec ATS - Talent Search</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js?v=4" defer></script>
+  <script src="script.js?v=6" defer></script>
 </head>
 
 <body>
@@ -28,7 +28,17 @@
   <div id="main">
     <h1>Talent Search</h1>
 
-    <table>
+    <!-- SEARCH BAR -->
+    <div class="search-wrap">
+      <input 
+        type="text" 
+        id="leadSearch" 
+        placeholder="Search name, phone, email, status, or bucket..."
+      >
+    </div>
+
+    <!-- TABLE -->
+    <table id="talentTable">
       <thead>
         <tr>
           <th></th>
