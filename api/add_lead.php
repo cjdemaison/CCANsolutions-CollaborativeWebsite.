@@ -1,41 +1,48 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__ . '/../require_login.php';
+header('Content-Type: application/json; charset=utf-8');
+
 require_once __DIR__ . '/../db.php';
 
-$raw = file_get_contents("php://input");
-$data = json_decode($raw, true);
-if (!$data) { $data = $_POST; }
-
-$fullName = trim($data["name"] ?? "");
-$phone    = trim($data["phone"] ?? "");
-$email    = trim($data["email"] ?? "");
-$location = trim($data["location"] ?? "");
-
-if ($fullName === "") {
-  echo json_encode(["status" => "error", "message" => "Name is required"]);
-  exit;
-}
-
-// split name into first/last
-$parts = preg_split('/\s+/', $fullName);
-$first = $parts[0] ?? "";
-$last  = (count($parts) > 1) ? implode(" ", array_slice($parts, 1)) : "";
-
 try {
-  $stmt = $pdo->prepare("
-    INSERT INTO leads (first_name, last_name, phone, email, location, status, bucket, created_at)
-    VALUES (:first, :last, :phone, :email, :location, 'New', 'New Lead', NOW())
-  ");
-  $stmt->execute([
-    ":first" => $first,
-    ":last" => $last,
-    ":phone" => $phone,
-    ":email" => $email,
-    ":location" => $location
-  ]);
+    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-  echo json_encode(["status" => "success", "id" => $pdo->lastInsertId()]);
-} catch (Exception $e) {
-  echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    if ($search !== '') {
+        $sql = "
+            SELECT * FROM leads
+            WHERE 
+                first_name LIKE :search OR
+                last_name LIKE :search OR
+                phone LIKE :search OR
+                email LIKE :search OR
+                location LIKE :search OR
+                status LIKE :search OR
+                bucket LIKE :search OR
+                notes LIKE :search
+            ORDER BY created_at DESC
+        ";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':search' => "%$search%"
+        ]);
+    } else {
+        $stmt = $pdo->prepare("SELECT * FROM leads ORDER BY created_at DESC");
+        $stmt->execute();
+    }
+
+    $leads = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+        "status" => "success",
+        "leads" => $leads
+    ]);
+} catch (Throwable $e) {
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "message" => $e->getMessage()
+    ]);
 }
