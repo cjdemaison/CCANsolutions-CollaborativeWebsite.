@@ -1,4 +1,18 @@
-<?php require __DIR__ . '/require_login.php'; ?>
+<?php
+require __DIR__ . '/require_login.php';
+require __DIR__ . '/dbconnection.php';
+
+function getMetric(PDO $pdo, string $sql): int {
+    $stmt = $pdo->query($sql);
+    return (int)$stmt->fetchColumn();
+}
+
+$totalCandidates = getMetric($pdo, "SELECT COUNT(*) FROM leads");
+$newLeads = getMetric($pdo, "SELECT COUNT(*) FROM leads WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
+$followUpsToday = getMetric($pdo, "SELECT COUNT(*) FROM leads WHERE follow_up = CURDATE()");
+$interviewsScheduled = getMetric($pdo, "SELECT COUNT(*) FROM leads WHERE status = 'Interview Scheduled'");
+$hires = getMetric($pdo, "SELECT COUNT(*) FROM leads WHERE status = 'Hired'");
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,6 +32,10 @@
     .grid { display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; }
     .card { background:#fff; border-radius:14px; box-shadow:0 3px 12px rgba(0,0,0,.08); padding:16px; }
     .card h2 { margin:0 0 10px 0; font-size:18px; }
+    .metrics-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:18px; }
+    .metric-card { background:#fff; border-radius:14px; box-shadow:0 3px 12px rgba(0,0,0,.08); padding:16px; }
+    .metric-label { color:#6b7280; font-size:14px; margin-bottom:8px; }
+    .metric-value { font-size:28px; font-weight:800; color:#0b5f57; }
     .muted { color:#6b7280; }
     .pill { background:#e7f3f2; color:#0b5f57; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
     .cal { display:flex; gap:14px; align-items:flex-start; }
@@ -48,7 +66,7 @@
   <div class="topbar">
     <div style="font-weight:800;">Acutec ATS</div>
     <div>
-      <button onclick="window.location='login.php'" style="background:#fff; color:#0b5f57; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;">
+      <button onclick="window.location='logout.php'" style="background:#fff; color:#0b5f57; border:none; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;">
         Logout
       </button>
     </div>
@@ -66,6 +84,33 @@
 
     <main class="main">
       <div class="content">
+
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Total Candidates</div>
+            <div class="metric-value"><?= $totalCandidates ?></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">New Leads (Last 7 Days)</div>
+            <div class="metric-value"><?= $newLeads ?></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Follow-ups Due Today</div>
+            <div class="metric-value"><?= $followUpsToday ?></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Interviews Scheduled</div>
+            <div class="metric-value"><?= $interviewsScheduled ?></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Hires</div>
+            <div class="metric-value"><?= $hires ?></div>
+          </div>
+        </section>
 
         <div class="grid">
 
