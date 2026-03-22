@@ -142,6 +142,28 @@ function h($v): string {
           <div id="saveStatus" style="font-weight:800;"></div>
         </div>
       </div>
+	  
+	  <h3>Resume</h3>
+
+<form action="api/upload_resume.php" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="candidate_id" value="<?php echo $candidate['id']; ?>">
+    <input type="file" name="resume" required>
+    <button type="submit">Upload Resume</button>
+</form>
+
+<?php if (!empty($candidate['resume_path'])): ?>
+    <p>
+        <a href="<?php echo $candidate['resume_path']; ?>" target="_blank">
+            View Resume
+        </a>
+    </p>
+
+    <form action="api/upload_resume.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="candidate_id" value="<?php echo $candidate['id']; ?>">
+        <input type="file" name="resume" required>
+        <button type="submit">Replace Resume</button>
+    </form>
+<?php endif; ?>
 
     </div>
   </div>
