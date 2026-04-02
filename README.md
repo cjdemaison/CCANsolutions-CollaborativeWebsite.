@@ -16,12 +16,12 @@ The purpose of this project is to demonstrate:
 - Database connectivity
 - UI/UX implementation
 
-The system simulates an internal recruiting dashboard with talent management and follow-up tracking features.
+The system simulates an internal recruiting dashboard with talent management, follow-up tracking, and candidate profile features.
 
-This system is also deployed to a live production environment.
+This system is fully deployed and operating in a live production environment.
 
 Live Site:  
-https://acutectalent.com
+https://acutectalent.com :contentReference[oaicite:0]{index=0}
 
 ---
 
@@ -40,15 +40,15 @@ https://acutectalent.com
 ### Local Environment Setup (MAMP)
 
 1. Place the project folder inside:  
-   /Applications/MAMP/htdocs/CCANsolutions
+   /Applications/MAMP/htdocs/CCANsolutions  
 
-2. Start MAMP.
+2. Start MAMP  
 
 3. Visit in browser:  
-   http://localhost:8888/CCANsolutions/home.html
+   http://localhost:8888/CCANsolutions/home.php  
 
 4. Database management:  
-   http://localhost:8888/phpMyAdmin
+   http://localhost:8888/phpMyAdmin  
 
 ---
 
@@ -56,30 +56,33 @@ https://acutectalent.com
 
 This system is deployed using:
 
-- Hostinger Web Hosting
-- Custom domain: acutectalent.com
-- PHP backend
-- MySQL database
-- Public hosting environment
+- Hostinger Web Hosting  
+- Custom domain: acutectalent.com  
+- PHP backend  
+- MySQL database  
+- Public hosting environment  
 
 Deployment structure:
 
 public_html/
 
-- home.html
-- recruiting.html
-- candidate_profile.html
-- script.js
-- style.css
-- api/
-- dbconnection.php
+- home.php  
+- recruiting.php  
+- candidate_profile.php  
+- login.php  
+- require_login.php  
+- script.js  
+- style.css  
+- api/  
+- db.php  
 
 The live deployment allows full system functionality including:
 
-- Viewing candidates
-- Editing candidate data
-- Follow-up tracking
-- Profile navigation
+- Secure login and authentication  
+- Viewing and editing candidates  
+- Resume upload and storage  
+- Follow-up tracking and history  
+- Profile navigation  
 
 ---
 
@@ -87,30 +90,57 @@ The live deployment allows full system functionality including:
 
 ### Dashboard
 
-- Follow-up Calendar UI
-  - Dynamic month grid
-  - Clickable day selection
-  - Displays scheduled follow-ups
-- Today’s To-Dos section
-  - Add tasks
-  - Interactive UI layout
-- Clean responsive dashboard layout
+- Follow-up Calendar UI  
+  - Dynamic month grid  
+  - Clickable day selection  
+  - Displays scheduled follow-ups  
+  - Clickable candidate navigation  
+
+- Today’s To-Dos section  
+  - Interactive UI layout  
+
+- Real-Time Metrics  
+  - Total leads  
+  - New leads  
+  - Follow-ups today  
+  - Interviewing  
+  - Offered  
+  - Hired  
 
 ---
 
 ### Talent Search (Recruiting Page)
 
-- Candidate search functionality
-- Status management dropdown
-- Bucket assignment dropdown
-- Quick notes editing
-- Delete functionality
-- Bulk actions support
-- Follow-up date field
-- Location and candidate metadata display
-- Clickable candidate profile navigation
-  - Clicking a candidate name opens the full candidate profile page
-  - Phone numbers and email addresses are clickable for direct contact
+- Candidate search functionality (name, email, phone)  
+- Status management dropdown  
+- Bucket assignment dropdown  
+- Quick notes editing  
+- Delete functionality  
+- Follow-up date field  
+- Improved filtering and usability  
+- Clickable candidate profile navigation  
+  - Clicking a candidate name opens the profile page  
+  - Phone numbers and email addresses are clickable  
+
+---
+
+### Candidate Profile Page
+
+- Displays full candidate details  
+- Resume upload and viewing  
+- Follow-up history tracking  
+- Notes tracking  
+- Easy navigation back to dashboard  
+
+---
+
+### Authentication System
+
+- Login page implemented  
+- Session-based access control  
+- Protected routes using require_login.php  
+- Prevents unauthorized access  
+- Session timeout handling  
 
 ---
 
@@ -118,32 +148,39 @@ The live deployment allows full system functionality including:
 
 The /api directory contains backend PHP endpoints that:
 
-- Connect to MySQL database
-- Handle candidate data retrieval
-- Manage status and bucket updates
-- Support follow-up data storage
-- Provide structured JSON responses
+- Connect to MySQL database  
+- Handle candidate data retrieval and updates  
+- Manage status and bucket changes  
+- Store and retrieve follow-up data  
+- Provide dashboard metrics  
+- Return structured JSON responses  
 
 ---
 
 ## 6. Database
 
-- MySQL (phpMyAdmin and Hostinger)
-- Storage engine: InnoDB
-- Collation: utf8mb4_unicode_ci
+- MySQL (phpMyAdmin and Hostinger)  
+- Storage engine: InnoDB  
+- Collation: utf8mb4_unicode_ci  
 
 Leads table includes:
 
-- id
-- first_name
-- last_name
-- phone
-- email
-- location
-- follow_up
-- status
-- bucket
-- notes
+- id  
+- first_name  
+- last_name  
+- phone  
+- email  
+- location  
+- follow_up  
+- status  
+- bucket  
+- notes  
+- created_at  
+
+Additional support for:
+
+- Resume file storage  
+- Follow-up tracking updates  
 
 ---
 
@@ -152,22 +189,22 @@ Leads table includes:
 This project follows a structured Git branching strategy:
 
 main  
-Stable production-ready code only
+Stable production-ready code only  
 
 develop  
-Main integration branch
+Main integration branch  
 
 feature/*  
 Individual feature branches  
 
 Workflow Process:
 
-1. Create feature branch
-2. Implement changes
-3. Commit changes
-4. Submit pull request
-5. Review and merge
-6. Deploy to production
+1. Create feature branch  
+2. Implement changes  
+3. Commit changes  
+4. Submit pull request  
+5. Review and merge  
+6. Deploy to production  
 
 ---
 
@@ -175,52 +212,66 @@ Workflow Process:
 
 For detailed planning, testing, and progress tracking, see:
 
-SPRINT_LOG.md
+SPRINT_LOG.md  
 
 Includes:
 
-- Task assignments
-- UI implementation notes
-- Backend development
-- Database adjustments
-- Feature testing
+- Task assignments  
+- UI implementation notes  
+- Backend development  
+- Database adjustments  
+- Feature testing  
 
 ---
 
-## 9. Current Sprint Progress
+## 9. Current Sprint Progress (Sprint 5)
 
 ### Completed
 
-- Dashboard calendar UI implementation
-- To-Do section UI
-- Talent Search functional controls
-- Database schema updates
-- Backend API structure
-- Encoding fixes
-- Local environment documentation
-- Clickable candidate profile implementation
-- Live deployment to Hostinger
+- Full authentication system implementation  
+- Session protection across all pages  
+- Resume upload system  
+- Dashboard metrics connected to database  
+- Talent Search search and filtering improvements  
+- Follow-up history tracking  
+- Mobile responsiveness improvements  
+- UI/UX cleanup and consistency fixes  
+- Production system fully operational  
 
 ### In Progress
 
-- Calendar follow-up persistence
-- Login system integration
-- Authentication system
+- Final demo video  
+- Advanced analytics (source tracking)  
+- Export functionality (CSV/Excel)  
 
 ---
 
-## 10. Recent Feature Update – Clickable Candidate Profiles
+## 10. Recent Feature Updates
 
-Users can now click a candidate’s name from:
+### Resume Upload System
 
-- Talent Search page
-- Dashboard follow-up calendar
+Users can now upload resumes:
 
-This opens the candidate profile page.
+- During candidate creation  
+- After candidate creation  
 
-Phone numbers and email addresses are also clickable.
+Resumes are stored on the server and linked to candidate profiles.
 
-This improves recruiter workflow and navigation efficiency.
+---
+
+### Follow-Up History Tracking
+
+- Tracks changes to follow-up dates and notes  
+- Visible within candidate profile  
+- Integrated with dashboard calendar  
+
+---
+
+### Authentication & Security
+
+- Full login system implemented  
+- Protected access to all system pages  
+- Prevents direct URL access without login  
 
 ---
 
@@ -228,6 +279,6 @@ This improves recruiter workflow and navigation efficiency.
 
 Production URL:
 
-https://acutectalent.com
+https://acutectalent.com :contentReference[oaicite:1]{index=1}  
 
-This version connects to a live MySQL database and demonstrates full system functionality in a real hosting environment.
+This version connects to a live MySQL database and demonstrates a fully functional ATS in a real hosting environment.
