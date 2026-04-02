@@ -9,19 +9,19 @@ CCANsolutions is a collaborative web-based Applicant Tracking System (ATS) proto
 
 The purpose of this project is to demonstrate:
 
-- Team-based software development
-- Structured GitHub workflow with branching
-- Agile sprint documentation
-- Frontend and backend integration
-- Database connectivity
-- UI/UX implementation
+- Team-based software development  
+- Structured GitHub workflow with branching  
+- Agile sprint documentation  
+- Frontend and backend integration  
+- Database connectivity  
+- UI/UX implementation  
 
-The system simulates an internal recruiting dashboard with talent management, follow-up tracking, and candidate profile features.
+The system simulates an internal recruiting dashboard with talent management, follow-up tracking, and candidate profile functionality.
 
 This system is fully deployed and operating in a live production environment.
 
 Live Site:  
-https://acutectalent.com :contentReference[oaicite:0]{index=0}
+https://acutectalent.com  
 
 ---
 
@@ -29,11 +29,11 @@ https://acutectalent.com :contentReference[oaicite:0]{index=0}
 
 ### Dependencies
 
-- Web Browser (Chrome recommended)
-- MAMP (for local PHP/MySQL environment)
-- Git
-- GitHub account
-- Optional: VS Code
+- Web Browser (Chrome recommended)  
+- MAMP (for local PHP/MySQL environment)  
+- Git  
+- GitHub account  
+- Optional: VS Code  
 
 ---
 
@@ -117,10 +117,9 @@ The live deployment allows full system functionality including:
 - Quick notes editing  
 - Delete functionality  
 - Follow-up date field  
-- Improved filtering and usability  
+- Filtering by status and bucket  
 - Clickable candidate profile navigation  
-  - Clicking a candidate name opens the profile page  
-  - Phone numbers and email addresses are clickable  
+- Clickable phone and email links  
 
 ---
 
@@ -130,7 +129,7 @@ The live deployment allows full system functionality including:
 - Resume upload and viewing  
 - Follow-up history tracking  
 - Notes tracking  
-- Easy navigation back to dashboard  
+- Navigation back to dashboard  
 
 ---
 
@@ -144,7 +143,41 @@ The live deployment allows full system functionality including:
 
 ---
 
-## 5. Backend (API Folder)
+## 5. Sprint 5 Features
+
+The following features were implemented during Sprint 5:
+
+- Full authentication system with session protection  
+- Resume upload improvements and file storage  
+- Dashboard analytics connected to live database  
+- Talent Search search and filtering improvements  
+- Follow-up history tracking  
+- Mobile responsiveness improvements  
+
+---
+
+## 6. Test Credentials
+
+Use the following credentials to access the system:
+
+Username: test  
+Password: test123  
+
+---
+
+## 7. Sprint 5 Traceability
+
+- Authentication System → PR #20, PR #21  
+- Resume Upload Improvements → PR #22  
+- Dashboard Analytics → PR #23  
+- Search & Filtering → PR #24  
+- Follow-Up Tracking → PR #25  
+- UI & Mobile Improvements → PR #26, PR #27  
+- API Optimization → PR #28  
+
+---
+
+## 8. Backend (API Folder)
 
 The /api directory contains backend PHP endpoints that:
 
@@ -155,9 +188,16 @@ The /api directory contains backend PHP endpoints that:
 - Provide dashboard metrics  
 - Return structured JSON responses  
 
+Example endpoints:
+
+- get_leads.php  
+- add_lead.php  
+- update_lead.php  
+- delete_lead.php  
+
 ---
 
-## 6. Database
+## 9. Database
 
 - MySQL (phpMyAdmin and Hostinger)  
 - Storage engine: InnoDB  
@@ -184,7 +224,7 @@ Additional support for:
 
 ---
 
-## 7. Development Workflow
+## 10. Development Workflow
 
 This project follows a structured Git branching strategy:
 
@@ -208,7 +248,7 @@ Workflow Process:
 
 ---
 
-## 8. Sprint Technical Logs
+## 11. Sprint Technical Logs
 
 For detailed planning, testing, and progress tracking, see:
 
@@ -217,68 +257,39 @@ SPRINT_LOG.md
 Includes:
 
 - Task assignments  
-- UI implementation notes  
-- Backend development  
-- Database adjustments  
-- Feature testing  
+- Feature implementation  
+- Backend updates  
+- Testing results  
+- Bug tracking  
 
 ---
 
-## 9. Current Sprint Progress (Sprint 5)
+## 12. Current System Status
 
 ### Completed
 
-- Full authentication system implementation  
+- Full authentication system  
 - Session protection across all pages  
 - Resume upload system  
 - Dashboard metrics connected to database  
-- Talent Search search and filtering improvements  
+- Talent Search search and filtering  
 - Follow-up history tracking  
 - Mobile responsiveness improvements  
-- UI/UX cleanup and consistency fixes  
+- UI/UX cleanup  
 - Production system fully operational  
 
 ### In Progress
 
-- Final demo video  
 - Advanced analytics (source tracking)  
 - Export functionality (CSV/Excel)  
+- Final demo preparation  
 
 ---
 
-## 10. Recent Feature Updates
-
-### Resume Upload System
-
-Users can now upload resumes:
-
-- During candidate creation  
-- After candidate creation  
-
-Resumes are stored on the server and linked to candidate profiles.
-
----
-
-### Follow-Up History Tracking
-
-- Tracks changes to follow-up dates and notes  
-- Visible within candidate profile  
-- Integrated with dashboard calendar  
-
----
-
-### Authentication & Security
-
-- Full login system implemented  
-- Protected access to all system pages  
-- Prevents direct URL access without login  
-
----
-
-## 11. Live Production System
+## 13. Live Production System
 
 Production URL:
 
-https://acutectalent.com :contentReference[oaicite:1]{index=1}  
+https://acutectalent.com  
 
 This version connects to a live MySQL database and demonstrates a fully functional ATS in a real hosting environment.
