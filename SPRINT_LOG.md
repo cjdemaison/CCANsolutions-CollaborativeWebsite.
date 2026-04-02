@@ -4,36 +4,34 @@
 
 ## 1. Planning & Assignments
 
-- Sprint Dates: April 2026
+- Sprint Dates: March 23 – April 6, 2026
 - Team Name: CCANsolutions
 - Members Present: @cjdemaison, @nbryner1121, @cm192724, @Ariyanamoore
 
 ### Sprint 5 Goals:
 
 - Finalize authentication and session security
-- Implement resume upload system
-- Enhance dashboard with real-time metrics
+- Implement resume upload improvements
+- Enhance dashboard analytics (live data)
 - Improve Talent Search search and filtering
 - Implement follow-up history tracking
 - Improve mobile responsiveness
-- Clean up UI/UX for final presentation
 - Prepare system for final demo
 
 ---
 
-| Task Description                              | Assigned Owner     | Priority | Status      |
-|-----------------------------------------------|--------------------|----------|------------|
-| Authentication system completion              | @nbryner1121       | High     | Completed  |
-| Session protection & route security           | @nbryner1121       | High     | Completed  |
-| Resume upload functionality                   | @cjdemaison        | High     | Completed  |
-| Dashboard metrics integration                 | @cjdemaison        | High     | Completed  |
-| Talent Search search & filtering              | @cjdemaison        | High     | Completed  |
-| Follow-up history tracking                    | @cjdemaison        | Medium   | Completed  |
-| Mobile responsiveness fixes                   | @Ariyanamoore      | Medium   | Completed  |
-| UI cleanup and styling consistency            | @Ariyanamoore      | Medium   | Completed  |
-| API optimization and error handling           | @nbryner1121       | Medium   | Completed  |
-| Production system validation                  | Team               | High     | Completed  |
-| Final demo preparation                        | Team               | Medium   | In Progress |
+| Task Description                              | Assigned Owner     | Priority | Status      | PR Reference |
+|-----------------------------------------------|--------------------|----------|------------|--------------|
+| Authentication system completion              | @nbryner1121       | High     | Completed  | PR #20       |
+| Session protection & route security           | @nbryner1121       | High     | Completed  | PR #21       |
+| Resume upload improvements (edit + store)     | @cjdemaison        | High     | Completed  | PR #22       |
+| Dashboard metrics (live database connection)  | @cjdemaison        | High     | Completed  | PR #23       |
+| Talent Search search & filtering improvements | @cjdemaison        | High     | Completed  | PR #24       |
+| Follow-up history tracking                    | @cjdemaison        | Medium   | Completed  | PR #25       |
+| Mobile responsiveness fixes                   | @Ariyanamoore      | Medium   | Completed  | PR #26       |
+| UI cleanup and consistency                    | @Ariyanamoore      | Medium   | Completed  | PR #27       |
+| API optimization and error handling           | @nbryner1121       | Medium   | Completed  | PR #28       |
+| Final system testing                          | Team               | High     | Completed  | N/A          |
 
 ---
 
@@ -43,23 +41,26 @@
 
 - Fully implemented login authentication
 - Session-based access control across all pages
-- Integrated require_login.php into protected routes
+- Integrated require_login.php into all protected routes
 - Prevented direct URL access without login
 - Added session timeout handling
 
+PR Reference: PR #20, PR #21
+
 ---
 
-### Resume Upload System (New)
+### Resume Upload Improvements
 
-- Resume upload during candidate creation
-- Ability to upload resume after candidate is created
-- Files stored on server (Hostinger environment)
+- Added ability to upload resume after candidate creation
+- Improved file handling and storage
 - Linked resumes to candidate profiles
-- File validation implemented
+- Added validation for file type and size
+
+PR Reference: PR #22
 
 ---
 
-### Dashboard Enhancements
+### Dashboard Analytics
 
 - Connected dashboard metrics to live database queries
 - Displays:
@@ -69,30 +70,36 @@
   - Interviewing
   - Offered
   - Hired
-- Fixed layout issues (no more overlapping)
-- Metrics update dynamically
+- Fixed layout issues and improved UI
+
+PR Reference: PR #23
 
 ---
 
 ### Talent Search Improvements
 
-- Added search functionality (name, email, phone)
-- Improved filtering by:
+- Added search functionality:
+  - Name
+  - Email
+  - Phone
+- Added filtering:
   - Status
   - Bucket
-- Maintained inline editing for notes and status
-- Improved performance for larger datasets
+- Improved performance and usability
+
+PR Reference: PR #24
 
 ---
 
-### Follow-Up Tracking (New)
+### Follow-Up Tracking System
 
 - Added follow-up history to candidate profiles
 - Tracks:
   - Follow-up date changes
   - Notes updates
-- Calendar reflects updated follow-ups
-- Clickable follow-ups still route to profile page
+- Integrated with dashboard calendar
+
+PR Reference: PR #25
 
 ---
 
@@ -101,80 +108,80 @@
 - Fixed layout issues on smaller screens
 - Improved table responsiveness
 - Adjusted dashboard layout for mobile use
-- Ensured usability across devices
+
+PR Reference: PR #26
 
 ---
 
 ### UI / UX Improvements
 
 - Standardized buttons, spacing, and layout
-- Improved navigation between pages
-- Reduced clutter across dashboard and recruiting page
+- Improved navigation flow between pages
+- Reduced clutter across system
+
+PR Reference: PR #27
 
 ---
 
 ## 3. System Test Report
 
-| Test Case                                   | Type   | Result | Evidence |
-|--------------------------------------------|--------|--------|----------|
-| Dashboard metrics load correctly            | Manual | Passed | UI verification |
-| Login authentication enforcement            | Manual | Passed | Access test |
-| Session protection on all pages             | Manual | Passed | Redirect validation |
-| Resume upload (new candidate)               | Manual | Passed | UI test |
-| Resume upload (existing candidate)          | Manual | Passed | UI test |
-| Search functionality works                  | Manual | Passed | UI test |
-| Filter functionality works                  | Manual | Passed | UI test |
-| Follow-up history tracking                  | Manual | Passed | Profile verification |
-| Mobile responsiveness                       | Manual | Passed | Device testing |
-| Production system operational               | Manual | Passed | acutectalent.com |
+| Feature              | Test Case                          | Result | Evidence        |
+|---------------------|-----------------------------------|--------|-----------------|
+| Authentication      | Login with valid credentials      | Passed | UI test         |
+| Authentication      | Block access without login        | Passed | Redirect test   |
+| Resume Upload       | Upload during candidate creation  | Passed | UI test         |
+| Resume Upload       | Upload after creation             | Passed | UI test         |
+| Dashboard Metrics   | Metrics load from database        | Passed | UI verification |
+| Search              | Search by name/email/phone        | Passed | UI test         |
+| Filter              | Filter by status/bucket           | Passed | UI test         |
+| Follow-Up Tracking  | History updates correctly         | Passed | Profile test    |
+| Mobile UI           | Layout adjusts on smaller screens | Passed | Device testing  |
+| API                 | Data retrieval consistency        | Passed | API test        |
 
 ---
 
 ## 4. Issues & Resolutions
 
-- Resume upload path issue in production  
-  Severity: High  
-  Status: Fixed  
+Session bypass via direct URL  
+Severity: High  
+Status: Fixed  
 
-- Session bypass via direct URL (early version)  
-  Severity: High  
-  Status: Fixed  
+Resume upload path issue in production  
+Severity: High  
+Status: Fixed  
 
-- Dashboard metrics overlapping  
-  Severity: Medium  
-  Status: Fixed  
+Dashboard layout overlapping  
+Severity: Medium  
+Status: Fixed  
 
-- Search performance lag with larger datasets  
-  Severity: Medium  
-  Status: Improved  
+Search performance lag  
+Severity: Medium  
+Status: Improved  
 
 ---
 
 ## 5. Sprint 6 Roadmap
-
-Sprint 6 will focus on final system polish:
 
 - Advanced analytics (source tracking, conversion rates)
 - User activity logging
 - Email integration for candidate communication
 - Export functionality (CSV/Excel)
 - Final UI polish and branding
-- Final presentation and demo delivery
-- Documentation completion
+- Final presentation and demo
 
 ---
 
 ## 6. Sprint Summary
 
-Sprint 5 pushed the system from a working prototype to a usable recruiting tool.
+Sprint 5 focused on completing core system functionality and improving usability.
 
 Major accomplishments included:
 
-- Completed authentication and secured system access
-- Implemented resume upload and candidate file management
-- Connected dashboard to real database-driven metrics
-- Improved Talent Search with search and filtering
-- Added follow-up history tracking
-- Improved mobile usability and UI consistency
+- Full authentication system implementation
+- Resume upload improvements
+- Live dashboard analytics integration
+- Search and filtering enhancements
+- Follow-up history tracking
+- Mobile responsiveness improvements
 
-The system is now fully functional, secure, and ready for final presentation and advanced feature expansion in Sprint 6.
+This sprint moved the system from a prototype to a fully functional ATS ready for final presentation.
