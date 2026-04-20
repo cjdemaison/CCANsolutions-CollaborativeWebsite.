@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Candidate Profile - Acutec ATS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <div id="topBar">
+    <div class="title">Candidate Profile</div>
+    <button id="logoutBtn" onclick="window.location='login.html'">Logout</button>
+  </div>
+
+  <!-- SIDE NAV -->
+  <div id="sideNav">
+    <a href="home.html">Home</a>
+    <a href="recruiting.html">Talent Search</a>
+    <a href="add_lead.html">Add Lead</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <h1>Candidate Details</h1>
+
+    <div id="profileContainer">
+
+      <div class="profileRow">
+        <label>Name</label>
+        <input type="text" id="profileName" placeholder="First Last">
+      </div>
+
+      <div class="profileRow">
+        <label>Phone</label>
+        <input type="text" id="profilePhone" placeholder="814-555-1234">
+        <div style="margin-top:6px;">
+          <a id="profilePhoneLink" class="link" href="#" onclick="return false;">Call</a>
+        </div>
+      </div>
+
+      <div class="profileRow">
+        <label>Email</label>
+        <input type="email" id="profileEmail" placeholder="name@email.com">
+        <div style="margin-top:6px;">
+          <a id="profileEmailLink" class="link" href="#" onclick="return false;">Email</a>
+        </div>
+      </div>
+
+      <div class="profileRow">
+        <label>Location</label>
+        <input type="text" id="profileLocation" placeholder="City, State">
+      </div>
+
+      <div class="profileRow">
+        <label>Follow-Up</label>
+        <input type="date" id="profileFollowUp">
+      </div>
+
+      <div class="profileRow">
+        <label>Status</label>
+        <select id="profileStatus">
+          <option>New</option>
+          <option>Attempted Contact</option>
+          <option>Contacted</option>
+          <option>Interview Scheduled</option>
+          <option>Interviewed</option>
+          <option>Hired</option>
+          <option>Closed</option>
+        </select>
+      </div>
+
+      <div class="profileRow">
+        <label>Bucket</label>
+        <select id="profileBucket">
+          <option>New Lead</option>
+          <option>Hot Lead</option>
+          <option>Contact Later</option>
+          <option>CNC</option>
+          <option>Quality</option>
+          <option>Skilled</option>
+          <option>Not Interested</option>
+        </select>
+      </div>
+
+      <div class="profileRow">
+        <label>Notes</label>
+        <textarea id="profileNotes" placeholder="Notes..."></textarea>
+      </div>
+
+      <button onclick="saveProfile()" style="width:100%;">Save Profile</button>
+
+      <div style="margin-top:12px; display:flex; gap:10px;">
+        <button class="secondaryBtn" onclick="goBack()">Back</button>
+        <button class="danger" onclick="deleteThisLead()">Delete</button>
+      </div>
+
+      <div id="statusMsg" style="margin-top:12px; color:#555;"></div>
+
+    </div>
+  </div>
+
+<script>
+  const API = {
+    getLeads: "api/get_leads.php",
+    updateLead: "api/update_lead.php",
+    deleteLead: "api/delete_lead.php"
+  };
+
+  function getIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return Number(params.get("id") || 0);
+  }
+
+  function setMsg(msg) {
+    const el = document.getElementById("statusMsg");
+    if (el) el.textContent = msg || "";
+  }
+
+  function safeNameSplit(full) {
+    const s = String(full || "").trim();
+    if (!s) return { first_name: "", last_name: "" };
+    const parts = s.split(/\s+/);
+    if (parts.length === 1) return { first_name: parts[0], last_name: "" };
+    return { first_name: parts[0], last_name: parts.slice(1).join(" ") };
+  }
+
+  async function fetchLeads() {
+    const res = await fetch(API.getLeads, { cache: "no-store" });
+    const data = await res.json();
+    return data;
+  }
+
+  function updateClickableLinks(phone, email) {
+    const phoneLink = document.getElementById("profilePhoneLink");
+    const emailLink = document.getElementById("profileEmailLink");
+
+    const digits = String(phone || "").replace(/\D/g, "");
+
+    if (phoneLink) {
+      phoneLink.href = digits ? ("tel:" + digits) : "#";
+      phoneLink.textContent = digits ? "Call" : "No phone";
+      phoneLink.onclick = digits ? null : (e) => e.preventDefault();
+    }
+
+    if (emailLink) {
+      emailLink.href = email ? ("mailto:" + email) : "#";
+      emailLink.textContent = email ? "Email" : "No email";
+      emailLink.onclick = email ? null : (e) => e.preventDefault();
+    }
+  }
+
+  async function loadProfile() {
+    const id = getIdFromUrl();
+    if (!id) {
+      setMsg("Missing id. This page needs ?id=123");
+      return;
+    }
+
+    try {
+      const data = await fetchLeads();
+      if (data.status !== "success") {
+        setMsg("Could not load candidate.");
+        return;
+      }
+
+      const lead = (data.leads || []).find(l => Number(l.id) === Number(id));
+      if (!lead) {
+        setMsg("Candidate not found.");
+        return;
+      }
+
+      const fullName = `${lead.first_name || ""} ${lead.last_name || ""}`.trim();
+
+      document.getElementById("profileName").value = fullName;
+      document.getElementById("profilePhone").value = lead.phone || "";
+      document.getElementById("profileEmail").value = lead.email || "";
+      document.getElementById("profileLocation").value = lead.location || "";
+      document.getElementById("profileFollowUp").value = lead.follow_up || "";
+      document.getElementById("profileStatus").value = lead.status || "New";
+      document.getElementById("profileBucket").value = lead.bucket || "New Lead";
+      document.getElementById("profileNotes").value = lead.notes || "";
+
+      updateClickableLinks(lead.phone, lead.email);
+      setMsg("");
+
+    } catch (err) {
+      setMsg("Error loading candidate: " + err.message);
+    }
+  }
+
+  async function saveProfile() {
+    const id = getIdFromUrl();
+    if (!id) return;
+
+    const name = document.getElementById("profileName").value.trim();
+    const { first_name, last_name } = safeNameSplit(name);
+
+    const payload = {
+      id,
+      first_name,
+      last_name,
+      phone: document.getElementById("profilePhone").value.trim(),
+      email: document.getElementById("profileEmail").value.trim(),
+      location: document.getElementById("profileLocation").value.trim(),
+      follow_up: document.getElementById("profileFollowUp").value,
+      status: document.getElementById("profileStatus").value,
+      bucket: document.getElementById("profileBucket").value,
+      notes: document.getElementById("profileNotes").value.trim()
+    };
+
+    try {
+      const res = await fetch(API.updateLead, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.status !== "success") {
+        setMsg("Save failed: " + (data.message || "Unknown error"));
+        return;
+      }
+
+      updateClickableLinks(payload.phone, payload.email);
+      setMsg("Saved.");
+
+    } catch (err) {
+      setMsg("Save failed: " + err.message);
+    }
+  }
+
+  async function deleteThisLead() {
+    const id = getIdFromUrl();
+    if (!id) return;
+
+    if (!confirm("Delete this candidate?")) return;
+
+    try {
+      const res = await fetch(API.deleteLead, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+      });
+
+      const data = await res.json();
+      if (data.status !== "success") {
+        setMsg("Delete failed: " + (data.message || "Unknown error"));
+        return;
+      }
+
+      window.location = "recruiting.html";
+    } catch (err) {
+      setMsg("Delete failed: " + err.message);
+    }
+  }
+
+  function goBack() {
+    window.history.back();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadProfile();
+
+    document.getElementById("profilePhone").addEventListener("input", (e) => {
+      updateClickableLinks(e.target.value, document.getElementById("profileEmail").value);
+    });
+    document.getElementById("profileEmail").addEventListener("input", (e) => {
+      updateClickableLinks(document.getElementById("profilePhone").value, e.target.value);
+    });
+  });
+</script>
+
+</body>
+</html>

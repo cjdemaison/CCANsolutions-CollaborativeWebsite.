@@ -1,129 +1,284 @@
-/* Basic styling for the collaborative website */
+/* ===========================
+   ACUTEC ATS - FULL STYLESHEET
+   =========================== */
 
+/* GLOBAL ------------------- */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-  background-color: #f4f4f9;
-  color: #333;
+    margin: 0;
+    padding: 0;
+    background: #f4f6f5;
+    font-family: Arial, sans-serif;
+}
+
+/* TOP BAR ------------------ */
+#topBar {
+    background: #0b5f57;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#topBar .title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#logoutBtn {
+    background: white;
+    color: #0b5f57;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#logoutBtn:hover {
+    opacity: 0.85;
+}
+
+/* SIDE NAV ----------------- */
+#sideNav {
+    width: 220px;
+    background: #0b5f57;
+    color: white;
+    position: fixed;
+    top: 55px;
+    bottom: 0;
+    left: 0;
+    padding: 20px 10px;
+}
+
+#sideNav a {
+    display: block;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+#sideNav a:hover,
+#sideNav a.active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* MAIN CONTENT ------------- */
+#main {
+    margin-left: 240px;
+    padding: 20px;
 }
 
 h1 {
-  color: #007acc;
+    margin-top: 0;
 }
 
-button {
-  background-color: #007acc;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
+/* CARDS -------------------- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
 }
 
-button:hover {
-  background-color: #005f99;
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* ----- Navbar styles ----- */
-.NavigationBar {
-  background-color: #007acc;
-  padding: 10px 20px;
+.card h2 {
+    margin: 0 0 10px 0;
 }
 
-.NavigationBar .nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.muted {
+    color: #6b7280;
 }
 
-.NavigationBar .logo {
-  color: white;
-  font-weight: bold;
-  font-size: 1.2em;
-  text-decoration: none;
+.pill {
+    background: #e7f3f2;
+    color: #0b5f57;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-.NavigationBar .nav-links {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
+/* LISTS -------------------- */
+.cleanList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.NavigationBar .nav-links li {
-  margin-left: 20px;
-}
-
-.NavigationBar .nav-links a {
-  color: white;
-  text-decoration: none;
-}
-
-.NavigationBar .nav-links a:hover {
-  text-decoration: underline;
-}
-
-/* ----- Sticky footer + layout ----- */
-.page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-main {
-  flex: 1;
-}
-
-/* ----- Footer styles ----- */
-.site-footer {
-  background: #0a2540; /* dark, high contrast */
-  color: #ffffff;
-  margin-top: 24px;
-  padding: 24px 16px;
-}
-
-.footer-inner {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: grid;
-  gap: 16px;
-}
-
-.footer-brand .tagline {
-  margin: 4px 0 0 0;
-  opacity: 0.9;
-}
-
-.footer-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 16px;
-}
-
-.footer-nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-}
-.footer-nav a:hover,
-.footer-nav a:focus {
-  text-decoration: underline;
-  outline: none;
-}
-
-.footer-legal {
-  font-size: 0.95rem;
-  opacity: 0.9;
-}
-
-/* 2-column on medium screens, tidy alignment on large */
-@media (min-width: 640px) {
-  .footer-inner {
-    grid-template-columns: 1fr auto;
+.cleanList li {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
-  .footer-legal {
-    grid-column: 1 / -1;
-  }
+    padding: 10px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+/* CALENDAR ----------------- */
+.calendarWrap {
+    margin-top: 8px;
+}
+
+.calendarControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.calendarControls button {
+    background: #0b5f57;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.calendarControls button:hover {
+    opacity: 0.85;
+}
+
+#monthLabel {
+    font-weight: bold;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.dow {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: center;
+}
+
+.day {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.day:hover {
+    border-color: #0b5f57;
+}
+
+.day.inactive {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.day.selected {
+    border-color: #0b5f57;
+    box-shadow: 0 0 0 2px rgba(11, 95, 87, 0.15) inset;
+}
+
+/* TODO --------------------- */
+.todoRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.todoRow input {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.todoRow button {
+    background: #0b5f57;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.todoRow button:hover {
+    opacity: 0.85;
+}
+
+/* BUTTONS ------------------ */
+button.danger,
+.dangerSmall {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+button.danger:hover,
+.dangerSmall:hover {
+    opacity: 0.85;
+}
+
+/* TABLES + INPUTS ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+}
+
+textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-family: Arial, sans-serif;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+/* MOBILE ------------------- */
+@media (max-width: 900px) {
+    #sideNav {
+        display: none;
+    }
+
+    #main {
+        margin-left: 0;
+        padding: 14px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Clickable links */
+a.link {
+    text-decoration: underline;
+    cursor: pointer;
 }

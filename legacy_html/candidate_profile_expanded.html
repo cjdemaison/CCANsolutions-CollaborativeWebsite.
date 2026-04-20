@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candidate Profile</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+
+<div class="dashboardContainer">
+
+  <!-- Header -->
+  <div class="dashboardHeader">
+    <h1>Candidate Profile</h1>
+    <a href="recruiting.html" class="secondary">← Back to Recruiting</a>
+  </div>
+
+  <!-- Main Profile Card -->
+  <div class="card" id="profileCard">
+    <div class="emptyState">Loading candidate...</div>
+  </div>
+
+  <!-- Work History -->
+  <div class="card">
+    <h2>Work History</h2>
+    <div id="workHistory" class="emptyState">No work history available.</div>
+  </div>
+
+  <!-- Interview Notes -->
+  <div class="card">
+    <h2>Interview Notes</h2>
+    <div id="interviewNotes" class="emptyState">No interview notes available.</div>
+  </div>
+
+  <!-- Follow-Up History -->
+  <div class="card">
+    <h2>Follow-Up History</h2>
+    <div id="followUpHistory" class="emptyState">Loading follow-ups...</div>
+  </div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const leadId = params.get("id");
+
+if (!leadId) {
+  document.getElementById("profileCard").innerHTML =
+    "<div class='emptyState'>No candidate ID provided.</div>";
+} else {
+  loadCandidateProfile(leadId);
+}
+
+async function loadCandidateProfile(id) {
+  try {
+    const res = await fetch("api/get_leads.php");
+    const data = await res.json();
+
+    if (data.status !== "success") {
+      showError("Failed to load candidate.");
+      return;
+    }
+
+    const lead = data.leads.find(l => Number(l.id) === Number(id));
+    if (!lead) {
+      showError("Candidate not found.");
+      return;
+    }
+
+    renderProfile(lead);
+    loadFollowUps(id);
+
+  } catch (err) {
+    showError("Error loading profile.");
+  }
+}
+
+function renderProfile(lead) {
+  const fullName = `${lead.first_name || ""} ${lead.last_name || ""}`.trim();
+
+  document.getElementById("profileCard").innerHTML = `
+    <h2>${escapeHtml(fullName)}</h2>
+    <div class="profileGrid">
+      <div><strong>Email:</strong> ${escapeHtml(lead.email || "N/A")}</div>
+      <div><strong>Phone:</strong> ${escapeHtml(lead.phone || "N/A")}</div>
+      <div><strong>Location:</strong> ${escapeHtml(lead.location || "N/A")}</div>
+      <div><strong>Status:</strong> ${escapeHtml(lead.status || "New")}</div>
+      <div><strong>Bucket:</strong> ${escapeHtml(lead.bucket || "New Lead")}</div>
+      <div><strong>Next Follow-Up:</strong> ${escapeHtml(lead.follow_up || "None")}</div>
+    </div>
+  `;
+
+  // Work history placeholder (expand if you add DB column later)
+  document.getElementById("workHistory").innerHTML =
+    lead.notes
+      ? `<div class="infoBlock">${escapeHtml(lead.notes)}</div>`
+      : `<div class="emptyState">No work history provided.</div>`;
+
+  // Interview Notes (using notes field)
+  document.getElementById("interviewNotes").innerHTML =
+    lead.notes
+      ? `<div class="infoBlock">${escapeHtml(lead.notes)}</div>`
+      : `<div class="emptyState">No interview notes recorded.</div>`;
+}
+
+async function loadFollowUps(id) {
+  try {
+    const res = await fetch(`api/followups.php?lead_id=${id}`);
+    const data = await res.json();
+
+    const container = document.getElementById("followUpHistory");
+
+    if (data.status !== "success" || !data.followups.length) {
+      container.innerHTML = "<div class='emptyState'>No follow-ups found.</div>";
+      return;
+    }
+
+    container.innerHTML = data.followups.map(f => `
+      <div class="followupRow">
+        <div><strong>Date:</strong> ${escapeHtml(f.follow_up)}</div>
+        <div><strong>Status:</strong> ${escapeHtml(f.status)}</div>
+        <div><strong>Bucket:</strong> ${escapeHtml(f.bucket)}</div>
+      </div>
+    `).join("");
+
+  } catch {
+    document.getElementById("followUpHistory").innerHTML =
+      "<div class='emptyState'>Failed to load follow-ups.</div>";
+  }
+}
+
+function showError(msg) {
+  document.getElementById("profileCard").innerHTML =
+    `<div class="emptyState">${msg}</div>`;
+}
+</script>
+
+</body>
+
+</html>
